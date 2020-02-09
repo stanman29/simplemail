@@ -184,7 +184,10 @@ void init_hook_with_data(struct Hook *h, unsigned long (*func)(void), void *data
 #ifndef MUIA_Dtpic_Name
 #define MUIA_Dtpic_Name 0x80423d72
 #endif
+
+#ifndef __AROS__
 #define DtpicObject MUI_NewObject("Dtpic.mui"
+#endif
 
 #ifndef MUIM_CreateDragImage
 #define MUIM_CreateDragImage 0x8042EB6F /* Returns MUI_DragImage */
