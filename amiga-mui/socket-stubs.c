@@ -144,7 +144,7 @@ void stub_SetSocketSignals(ULONG _SIGINTR, ULONG _SIGIO, ULONG _SIGURG)
 
 LONG stub_SetErrnoPtr(void *errno_p, LONG size)
 {
-	return SetErrnoPtr(errno_p, size);
+//	return SetErrnoPtr(errno_p, size);
 }
 
 LONG stub_SocketBaseTagList(void *tagList)
