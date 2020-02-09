@@ -207,6 +207,8 @@ static void deinit_mem(void)
 	if (pool) DeletePool(pool);
 }
 
+#ifndef __AROS__
+
 void *malloc(size_t size)
 {
 	ULONG *mem;
@@ -272,7 +274,7 @@ void *realloc(void *om, size_t size)
 
 	return malloc(size);
 }
-
+#endif
 
 /***************************************************
  IO Stuff.
@@ -308,6 +310,8 @@ static void deinit_io(void)
 		}
 	}
 }
+
+#ifndef __AROS__
 
 char *tmpnam(char *name)
 {
@@ -489,3 +493,5 @@ int rename(const char *oldname, const char *newname)
 
 	return 0;
 }
+
+#endif
