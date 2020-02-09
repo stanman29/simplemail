@@ -32,7 +32,11 @@
 #include <mui/BetterString_mcc.h>
 #include <mui/NListview_mcc.h>
 #include <mui/NListtree_mcc.h>
+#ifdef __AROS__
+#include <mui/Popplaceholder_mcc.h>
+#else
 #include <mui/popplaceholder_mcc.h>
+#endif
 #include <clib/alib_protos.h>
 #include <proto/exec.h>
 #include <proto/intuition.h>
