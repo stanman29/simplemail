@@ -137,7 +137,7 @@ STATIC ULONG UTF8String_Set(struct IClass *cl, Object *obj, struct opSet *msg)
 		if ((tag = FindTagItem(MUIA_UTF8String_Contents,newtags)))
 		{
 			tag->ti_Tag = MUIA_String_Contents;
-			tag->ti_Data = (ULONG)newcont;
+			tag->ti_Data = (IPTR)newcont;
 		}
 
 		if (msg->MethodID != OM_NEW)
@@ -179,7 +179,7 @@ STATIC ULONG UTF8String_Get(struct IClass *cl, Object *obj, struct opGet *msg)
 						char *contents = (char*)xget(obj,MUIA_String_Contents);
 						free(data->utf8_string);
 						data->utf8_string = utf8create(contents, user.config.default_codeset?user.config.default_codeset->name:NULL);
-						*msg->opg_Storage = (ULONG)data->utf8_string;
+						*msg->opg_Storage = (IPTR)data->utf8_string;
 					}
 					break;
 	}

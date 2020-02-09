@@ -375,7 +375,7 @@ long tcp_herrno(void)
 	if(SocketBaseTagList(tags) != 0)
 #else
 	if(SocketBaseTags(
-		SBTM_GETREF(SBTC_HERRNO), (ULONG)&id,
+		SBTM_GETREF(SBTC_HERRNO), (IPTR)&id,
 	TAG_DONE) != 0)
 #endif
 	{

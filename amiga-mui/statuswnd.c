@@ -92,9 +92,9 @@ int statuswnd_open(int active)
 
 		if (status_wnd)
 		{
-			DoMethod(status_wnd, MUIM_Notify, MUIA_transwnd_Aborted, TRUE, (ULONG)status_wnd, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)statuswnd_abort);
-			DoMethod(status_wnd, MUIM_Notify, MUIA_transwnd_Skipped, TRUE, (ULONG)status_wnd, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)statuswnd_skip);
-			DoMethod(App, OM_ADDMEMBER, (ULONG)status_wnd);
+			DoMethod(status_wnd, MUIM_Notify, MUIA_transwnd_Aborted, TRUE, (IPTR)status_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)statuswnd_abort);
+			DoMethod(status_wnd, MUIM_Notify, MUIA_transwnd_Skipped, TRUE, (IPTR)status_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)statuswnd_skip);
+			DoMethod(App, OM_ADDMEMBER, (IPTR)status_wnd);
 
 			statuswnd_set_head(NULL);
 
@@ -215,7 +215,7 @@ void statuswnd_mail_list_set_flags(int mno, int mflags)
 **************************************************************************/
 void statuswnd_mail_list_set_info(int mno, char *from, char *subject, char *date)
 {
-	DoMethod(status_wnd, MUIM_transwnd_InsertMailInfo, mno, (ULONG)from, (ULONG)subject, (ULONG)date);
+	DoMethod(status_wnd, MUIM_transwnd_InsertMailInfo, mno, (IPTR)from, (IPTR)subject, (IPTR)date);
 }
 
 /**************************************************************************
