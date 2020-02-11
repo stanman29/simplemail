@@ -4,9 +4,9 @@ include $(SRCDIR)/config/aros-contrib.cfg
 
 #MM- contrib-simplemail : contrib-simplemail-bin
 
-#MM contrib-simplemail-bin : includes linklibs linklibs-expat contrib-zune-classes-mailtext contrib-zune-classes-thebar \
-#MM contrib-zune-classes-popph contrib-simplemail-arexx contrib-simplemail-charsets contrib-simplemail-images \
-#MM contrib-simplemail-files contrib-simplemail-locale
+#MM contrib-simplemail-bin : includes linklibs linklibs-expat contrib-openssl contrib-zune-classes-mailtext \
+#MM contrib-zune-classes-thebar contrib-zune-classes-popph contrib-simplemail-arexx contrib-simplemail-charsets \
+#MM contrib-simplemail-images contrib-simplemail-files contrib-simplemail-locale
 
 #MM
 contrib-simplemail-bin-quick : contrib-simplemail-bin
