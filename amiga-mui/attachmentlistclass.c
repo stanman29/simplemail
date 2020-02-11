@@ -164,7 +164,7 @@ STATIC ULONG AttachmentList_New(struct IClass *cl,Object *obj,struct opSet *msg)
 						TAG_DONE);
 
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -197,7 +197,7 @@ STATIC ULONG AttachmentList_DropType(struct IClass *cl,Object *obj,struct MUIP_N
 	ULONG active = xget(obj, MUIA_NList_Active);
 	struct MUI_NListtree_TreeNode *treenode;
 
-	DoMethod(obj, MUIM_NList_GetEntry, *msg->pos, (ULONG)&treenode);
+	DoMethod(obj, MUIM_NList_GetEntry, *msg->pos, (IPTR)&treenode);
 
 	if (treenode)
 	{
@@ -235,7 +235,7 @@ STATIC ULONG AttachmentList_FindUniqueID(struct IClass *cl, Object *obj, struct 
 	{
 		struct MUI_NListtree_TreeNode *tn = (struct MUI_NListtree_TreeNode*)
 			DoMethod(obj,MUIM_NListtree_GetEntry,MUIV_NListtree_GetEntry_ListNode_Root,i,0);
-		if (tn->tn_User && ((((struct attachment*)(tn->tn_User))->unique_id) == msg->unique_id)) return (ULONG)tn;
+		if (tn->tn_User && ((((struct attachment*)(tn->tn_User))->unique_id) == msg->unique_id)) return (IPTR)tn;
 	}
 	return 0;
 }

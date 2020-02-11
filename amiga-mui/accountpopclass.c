@@ -107,7 +107,7 @@ STATIC ASM SAVEDS VOID account_objstr(REG(a0,struct Hook *h), REG(a2,Object *lis
 {
 	struct AccountPop_Data *data = (struct AccountPop_Data*)h->h_Data;
 	struct account *ac;
-	DoMethod(list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&ac);
+	DoMethod(list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&ac);
 	if ((LONG)ac == -1) ac = NULL;
 	set(data->obj,MUIA_AccountPop_Account,ac);
 }
@@ -127,7 +127,7 @@ STATIC ULONG AccountPop_Set(struct IClass *cl, Object *obj, struct opSet *msg, i
 
 	while ((tag = NextTagItem (&tstate)))
 	{
-		ULONG tidata = tag->ti_Data;
+		IPTR tidata = tag->ti_Data;
 
 		switch (tag->ti_Tag)
 		{
@@ -143,7 +143,7 @@ STATIC ULONG AccountPop_Set(struct IClass *cl, Object *obj, struct opSet *msg, i
 							{
 								/* Choose the first account if no account is specified and we have not
 								 * the posibility to use a default account */
-								tidata = (ULONG)list_first(&user.config.account_list);
+								tidata = (IPTR)list_first(&user.config.account_list);
 							}
 
 							if (!tidata)
@@ -223,8 +223,8 @@ STATIC ULONG AccountPop_New(struct IClass *cl,Object *obj,struct opSet *msg)
 	init_hook_with_data(&data->objstr_hook,(HOOKFUNC)account_objstr,data);
 	init_hook_with_data(&data->strobj_hook,(HOOKFUNC)account_strobj,data);
 
-	DoMethod(string, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)obj, 1, MUIM_Popstring_Open);
-	DoMethod(list, MUIM_Notify, MUIA_NList_DoubleClick, TRUE, (ULONG)obj, 2, MUIM_Popstring_Close, 1);
+	DoMethod(string, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)obj, 1, MUIM_Popstring_Open);
+	DoMethod(list, MUIM_Notify, MUIA_NList_DoubleClick, TRUE, (IPTR)obj, 2, MUIM_Popstring_Close, 1);
 
 	SetAttrs(list,
 						MUIA_NList_ConstructHook2, &data->construct_hook,
@@ -240,7 +240,7 @@ STATIC ULONG AccountPop_New(struct IClass *cl,Object *obj,struct opSet *msg)
 
 	AccountPop_Set(cl,obj,msg,1);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 STATIC VOID AccountPop_Dispose(struct IClass *cl,Object *obj, Msg msg)
@@ -257,7 +257,7 @@ STATIC ULONG AccountPop_Get(struct IClass *cl, Object *obj, struct opGet *msg)
 	switch (msg->opg_AttrID)
 	{
 		case	MUIA_AccountPop_Account:
-					*msg->opg_Storage = (ULONG)data->selected_account;
+					*msg->opg_Storage = (IPTR)data->selected_account;
 					return 1;
 
 		default:
@@ -279,7 +279,7 @@ STATIC ULONG AccountPop_Refresh(struct IClass *cl, Object *obj, Msg msg)
 	{
 		if (account->smtp->name && *account->smtp->name && account->email)
 		{
-			DoMethod(data->list, MUIM_NList_InsertSingle, (ULONG)account, MUIV_NList_Insert_Bottom);
+			DoMethod(data->list, MUIM_NList_InsertSingle, (IPTR)account, MUIV_NList_Insert_Bottom);
 		}
 		account = (struct account*)node_next(&account->node);
 	}

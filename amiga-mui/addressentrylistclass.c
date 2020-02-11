@@ -249,7 +249,7 @@ STATIC ULONG AddressEntryList_New(struct IClass *cl,Object *obj,struct opSet *ms
 			AddressEntryList_UpdateFormat(cl,obj);
 	}
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -337,7 +337,7 @@ STATIC ULONG AddressEntryList_Refresh(struct IClass *cl, Object *obj, struct MUI
 				if ((node->entry = addressbook_duplicate_entry_new(entry)))
 					list_insert_tail(&data->unvisible_list,&node->node);
 			}
-		} else DoMethod(obj, MUIM_NList_InsertSingle, (ULONG)entry, MUIV_NList_Insert_Sorted);
+		} else DoMethod(obj, MUIM_NList_InsertSingle, (IPTR)entry, MUIV_NList_Insert_Sorted);
 		entry = addressbook_next_entry(entry);
 	}
 	set(obj, MUIA_NList_Quiet, FALSE);
@@ -370,7 +370,7 @@ STATIC ULONG AddressEntryList_Store(struct IClass *cl, Object *obj, Msg msg)
 	{
 		struct addressbook_entry_new *entry;
 
-		DoMethod(obj, MUIM_NList_GetEntry, i, (ULONG)&entry);
+		DoMethod(obj, MUIM_NList_GetEntry, i, (IPTR)&entry);
 		addressbook_add_entry_duplicate(entry);
 	}
 	return 0;
@@ -415,7 +415,7 @@ STATIC ULONG AddressEntryList_ContextMenuBuild(struct IClass *cl, Object * obj, 
 
 	if (data->type != MUIV_AddressEntryList_Type_Main) return DoSuperMethodA(cl,obj,(Msg)msg);
 
-	if (msg->ontop) return (ULONG)data->title_menu;
+	if (msg->ontop) return (IPTR)data->title_menu;
 	return 0;
 }
 

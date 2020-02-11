@@ -516,11 +516,11 @@ static void insert_mail(struct Read_Data *data, struct mail_complete *mail)
 
 		if (icon)
 		{
-			DoMethod(data->attachments_group, OM_ADDMEMBER, (ULONG)group);
-			DoMethod(icon, MUIM_Notify, MUIA_ContextMenuTrigger, MUIV_EveryTime, (ULONG)App, 6, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)context_menu_trigger, (ULONG)data, (ULONG)mail, MUIV_TriggerValue);
-			DoMethod(icon, MUIM_Notify, MUIA_Icon_DoubleClick, TRUE, (ULONG)App, 5, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)icon_open, (ULONG)data, (ULONG)mail);
-			DoMethod(icon, MUIM_Notify, MUIA_Selected, TRUE, (ULONG)App, 5, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)icon_selected, (ULONG)data, (ULONG)icon);
-			DoMethod(icon, MUIM_Notify, MUIA_Icon_DropPath, MUIV_EveryTime, (ULONG)App, 6, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)icon_drop, (ULONG)data, (ULONG)mail, (ULONG)icon);
+			DoMethod(data->attachments_group, OM_ADDMEMBER, (IPTR)group);
+			DoMethod(icon, MUIM_Notify, MUIA_ContextMenuTrigger, MUIV_EveryTime, (IPTR)App, 6, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)context_menu_trigger, (IPTR)data, (IPTR)mail, MUIV_TriggerValue);
+			DoMethod(icon, MUIM_Notify, MUIA_Icon_DoubleClick, TRUE, (IPTR)App, 5, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)icon_open, (IPTR)data, (IPTR)mail);
+			DoMethod(icon, MUIM_Notify, MUIA_Selected, TRUE, (IPTR)App, 5, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)icon_selected, (IPTR)data, (IPTR)icon);
+			DoMethod(icon, MUIM_Notify, MUIA_Icon_DropPath, MUIV_EveryTime, (IPTR)App, 6, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)icon_drop, (IPTR)data, (IPTR)mail, (IPTR)icon);
 		}
 
 		free(buffer);
@@ -804,7 +804,7 @@ static void show_mail(struct Read_Data *data, struct mail_complete *m)
 		insert_text(data, m);
 	} else
 	{
-		DoMethod(data->attachments_group, MUIM_SetUDataOnce, (ULONG)m, MUIA_Selected, 1);
+		DoMethod(data->attachments_group, MUIM_SetUDataOnce, (IPTR)m, MUIA_Selected, 1);
 	}
 }
 
@@ -874,7 +874,7 @@ static void read_window_dispose(struct Read_Data **pdata)
 
 	read_cleanup(data);
 	set(data->wnd, MUIA_Window_Open, FALSE);
-	DoMethod(App, OM_REMMEMBER, (ULONG)data->wnd);
+	DoMethod(App, OM_REMMEMBER, (IPTR)data->wnd);
 	MUI_DisposeObject(data->wnd);
 
 	if (data->attachment_html_menu) MUI_DisposeObject(data->attachment_html_menu);
@@ -928,7 +928,7 @@ static void save_button_pressed(struct Read_Data **pdata)
 
 /**
  * The prev button has been pressed. This should be made somehow
- * gui independend later
+ * gui independent later
  *
  * @param pdata the read data instance/context
  */
@@ -948,7 +948,7 @@ static void prev_button_pressed(struct Read_Data **pdata)
 
 /**
  * The next button has been pressed This should be made somehow
- * gui independend later
+ * gui independent later
  *
  * @param pdata the read data instance/context
  */
@@ -997,7 +997,7 @@ static void delete_button_pressed(struct Read_Data **pdata)
 		} else
 		{
 			set(data->wnd, MUIA_Window_Open, FALSE);
-			DoMethod(App, MUIM_Application_PushMethod, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)read_window_dispose, (ULONG)data);
+			DoMethod(App, MUIM_Application_PushMethod, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)read_window_dispose, (IPTR)data);
 		}
 	}
 }
@@ -1038,7 +1038,7 @@ static void move_button_pressed(struct Read_Data **pdata)
 			} else
 			{
 				set(data->wnd, MUIA_Window_Open, FALSE);
-				DoMethod(App, MUIM_Application_PushMethod, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)read_window_dispose, (ULONG)data);
+				DoMethod(App, MUIM_Application_PushMethod, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)read_window_dispose, (IPTR)data);
 			}
 		} else
 		{
@@ -1214,7 +1214,7 @@ static int read_window_display_mail(struct Read_Data *data, struct mail_info *ma
 			DisposeAllChilds(data->attachments_group);
 			data->attachments_last_selected = NULL;
 			insert_mail(data,data->mail);
-			DoMethod(data->attachments_group, OM_ADDMEMBER, (ULONG)HSpace(0));
+			DoMethod(data->attachments_group, OM_ADDMEMBER, (IPTR)HSpace(0));
 			DoMethod(data->attachments_group, MUIM_Group_ExitChange);
 
 			if (!dont_show)
@@ -1260,7 +1260,7 @@ static int read_window_display_mail(struct Read_Data *data, struct mail_info *ma
 	DoMethod(data->attachments_group, MUIM_Group_InitChange);
 	DisposeAllChilds(data->attachments_group);
 	data->attachments_last_selected = NULL;
-	DoMethod(data->attachments_group, OM_ADDMEMBER, (ULONG)HSpace(0));
+	DoMethod(data->attachments_group, OM_ADDMEMBER, (IPTR)HSpace(0));
 	DoMethod(data->attachments_group, MUIM_Group_ExitChange);
 	set(App, MUIA_Application_Sleep, FALSE);
 
@@ -1503,35 +1503,35 @@ int read_window_open(const char *folder, struct mail_info *mail, int window)
 					MUIA_DataTypes_VertScrollbar, datatype_vert_scrollbar,
 					TAG_DONE);
 #ifndef __AROS__
-			DoMethod(data->html_simplehtml, MUIM_Notify, MUIA_SimpleHTML_URIClicked, MUIV_EveryTime, (ULONG)App, 5, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)uri_clicked, (ULONG)data, MUIV_TriggerValue);
+			DoMethod(data->html_simplehtml, MUIM_Notify, MUIA_SimpleHTML_URIClicked, MUIV_EveryTime, (IPTR)App, 5, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)uri_clicked, (IPTR)data, MUIV_TriggerValue);
 #endif
 			/* create notifies for toolbar buttons */
-			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_PREV,    9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)prev_button_pressed, (ULONG)data);
-			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_NEXT,    9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)next_button_pressed, (ULONG)data);
-			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_SAVE,    9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)save_button_pressed, (ULONG)data);
-			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_PRINT,   9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)menu_print, (ULONG)data);
-			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_MOVE,    9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)move_button_pressed, (ULONG)data);
-			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_DELETE,  9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)delete_button_pressed, (ULONG)data);
-			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_REPLY,   9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)reply_button_pressed, (ULONG)data);
-			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_FORWARD, 9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)forward_button_pressed, (ULONG)data);
+			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_PREV,    9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)prev_button_pressed, (IPTR)data);
+			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_NEXT,    9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)next_button_pressed, (IPTR)data);
+			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_SAVE,    9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)save_button_pressed, (IPTR)data);
+			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_PRINT,   9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)menu_print, (IPTR)data);
+			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_MOVE,    9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)move_button_pressed, (IPTR)data);
+			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_DELETE,  9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)delete_button_pressed, (IPTR)data);
+			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_REPLY,   9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)reply_button_pressed, (IPTR)data);
+			DoMethod(data->toolbar, MUIM_SMToolbar_DoMethod, SM_READWND_BUTTON_FORWARD, 9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)forward_button_pressed, (IPTR)data);
 
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 7, MUIM_Application_PushMethod, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)read_window_dispose, (ULONG)data);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 7, MUIM_Application_PushMethod, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)read_window_dispose, (IPTR)data);
 
 			/* Menu notifies */
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_PROJECT_ABOUT, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)display_about);
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_PROJECT_ABOUTMUI, (ULONG)App, 2, MUIM_Application_AboutMUI, 0);
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_PROJECT_QUIT, (ULONG)App, 2, MUIM_Application_ReturnID,  MUIV_Application_ReturnID_Quit);
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_MAIL_RAW, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)show_raw, (ULONG)data);
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_MAIL_PRINT, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)menu_print, (ULONG)data);
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_MAIL_SAVE_ALL_ATTACHMENTS, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (APTR)save_all_attachments, data);
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_SETTINGS_SHOW_ALLHEADERS, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)show_all_headers, (ULONG)data);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_PROJECT_ABOUT, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)display_about);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_PROJECT_ABOUTMUI, (IPTR)App, 2, MUIM_Application_AboutMUI, 0);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_PROJECT_QUIT, (IPTR)App, 2, MUIM_Application_ReturnID,  MUIV_Application_ReturnID_Quit);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_MAIL_RAW, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)show_raw, (IPTR)data);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_MAIL_PRINT, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)menu_print, (IPTR)data);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_MAIL_SAVE_ALL_ATTACHMENTS, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (APTR)save_all_attachments, data);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_MenuAction, MENU_SETTINGS_SHOW_ALLHEADERS, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)show_all_headers, (IPTR)data);
 			data->settings_show_all_headers_menu = (Object*)DoMethod(read_menu, MUIM_FindUData, MENU_SETTINGS_SHOW_ALLHEADERS);
 
 			set(App, MUIA_Application_Sleep, TRUE);
 
 			if (read_window_display_mail(data,mail))
 			{
-				DoMethod(App, OM_ADDMEMBER, (ULONG)wnd);
+				DoMethod(App, OM_ADDMEMBER, (IPTR)wnd);
 				set(wnd, MUIA_Window_Open, TRUE);
 				set(App, MUIA_Application_Sleep, FALSE);
 

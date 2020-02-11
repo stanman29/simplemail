@@ -86,7 +86,7 @@ STATIC ULONG Icon_New(struct IClass *cl,Object *obj,struct opSet *msg)
 		return 0;
 
 	Icon_Set(cl,obj,msg);
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -127,7 +127,7 @@ STATIC ULONG Icon_Set(struct IClass *cl,Object *obj,struct opSet *msg)
 
 	while ((tag = NextTagItem (&tstate)))
 	{
-		ULONG tidata = tag->ti_Data;
+		IPTR tidata = tag->ti_Data;
 
 		switch (tag->ti_Tag)
 		{
@@ -185,7 +185,7 @@ STATIC ULONG Icon_Get(struct IClass *cl, Object *obj, struct opGet *msg)
 	}
   if (msg->opg_AttrID == MUIA_Icon_DropPath)
   {
-		*msg->opg_Storage = (ULONG)data->drop_path;
+		*msg->opg_Storage = (IPTR)data->drop_path;
 		return 1;
   }
 	return DoSuperMethodA(cl,obj,(Msg)msg);
@@ -274,7 +274,7 @@ STATIC ULONG Icon_Setup(struct IClass *cl, Object *obj, struct MUIP_Setup *msg)
 	data->ehnode.ehn_Class    = cl;
 	data->ehnode.ehn_Events   = IDCMP_MOUSEBUTTONS;
 
-	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->ehnode);
 
 	return 1;
 }
@@ -290,7 +290,7 @@ STATIC ULONG Icon_Setup(struct IClass *cl, Object *obj, struct MUIP_Setup *msg)
 STATIC ULONG Icon_Cleanup(struct IClass *cl, Object *obj, Msg msg)
 {
 	struct Icon_Data *data = (struct Icon_Data*)INST_DATA(cl,obj);
-	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->ehnode);
 	if (data->obj)
 	{
 		FreeDiskObject(data->obj);
@@ -412,9 +412,9 @@ STATIC ULONG Icon_HandleEvent(struct IClass *cl, Object *obj, struct MUIP_Handle
 
 			if (WorkbenchBase->lib_Version >= 45)
 			{
-				DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->ehnode);
+				DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->ehnode);
 				data->ehnode.ehn_Events |= IDCMP_MOUSEMOVE;
-				DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->ehnode);
+				DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->ehnode);
 			}
 
 			return MUI_EventHandlerRC_Eat;
@@ -424,9 +424,9 @@ STATIC ULONG Icon_HandleEvent(struct IClass *cl, Object *obj, struct MUIP_Handle
 		{
 			if (WorkbenchBase->lib_Version >= 45)
 			{
-				DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->ehnode);
+				DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->ehnode);
 				data->ehnode.ehn_Events &= ~IDCMP_MOUSEMOVE;
-				DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->ehnode);
+				DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->ehnode);
 			}
 			return MUI_EventHandlerRC_Eat;
 		}
@@ -616,16 +616,16 @@ STATIC ULONG Icon_DeleteDragImage(struct IClass *cl, Object *obj, Msg msg)
 
 				if (data->drop_path)
 				{
-					DoMethod(_app(obj),MUIM_Application_PushMethod, (ULONG)obj, 3, MUIM_Set, MUIA_Icon_DropPath, (ULONG)data->drop_path);
+					DoMethod(_app(obj),MUIM_Application_PushMethod, (IPTR)obj, 3, MUIM_Set, MUIA_Icon_DropPath, (IPTR)data->drop_path);
 				}
 			}
 		}
 	}
 #endif
 
-	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->ehnode);
 	data->ehnode.ehn_Events &= ~IDCMP_MOUSEMOVE;
-	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->ehnode);
 
 	return DoSuperMethodA(cl,obj,(Msg)msg);
 }

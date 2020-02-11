@@ -88,8 +88,8 @@ static void progmonwnd_init(void)
 
 	if (progmon_wnd)
 	{
-		DoMethod(App, OM_ADDMEMBER, (ULONG)progmon_wnd);
-		DoMethod(progmon_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)progmon_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)progmon_wnd);
+		DoMethod(progmon_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)progmon_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
 
 		list_init(&progmon_gui_list);
 	}
@@ -145,7 +145,7 @@ static void progmonwnd_scan_entry(struct progmon_info *info, void *udata)
 		}
 
 		set(next_node->progmon_cancel_button, MUIA_Weight, 0);
-		DoMethod(progmon_group, OM_ADDMEMBER, (ULONG)next_node->progmon_group);
+		DoMethod(progmon_group, OM_ADDMEMBER, (IPTR)next_node->progmon_group);
 		DoMethod(next_node->progmon_cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, next_node->progmon_cancel_button, 4, MUIM_CallHook, &hook_standard, progmonwnd_cancel, next_node);
 		list_insert_tail(&progmon_gui_list,&next_node->node);
 

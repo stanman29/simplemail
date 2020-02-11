@@ -71,7 +71,7 @@ STATIC ULONG UTF8String_New(struct IClass *cl,Object *obj,struct opSet *msg)
 
 /*	data = (struct UTF8String_Data*)INST_DATA(cl,obj);*/
 	UTF8String_Set(cl,obj,msg);
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**

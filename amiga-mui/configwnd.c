@@ -792,7 +792,7 @@ static int config_use(void)
 	for (i=0;i<xget(phrase_phrase_list,MUIA_NList_Entries);i++)
 	{
 		struct phrase *phr;
-		DoMethod(phrase_phrase_list,MUIM_NList_GetEntry, i, (ULONG)&phr);
+		DoMethod(phrase_phrase_list,MUIM_NList_GetEntry, i, (IPTR)&phr);
 		insert_config_phrase(phr);
 	}
 
@@ -802,7 +802,7 @@ static int config_use(void)
 	for (i=0;i<xget(signature_signature_list,MUIA_NList_Entries);i++)
 	{
 		struct signature *sign;
-		DoMethod(signature_signature_list,MUIM_NList_GetEntry, i, (ULONG)&sign);
+		DoMethod(signature_signature_list,MUIM_NList_GetEntry, i, (IPTR)&sign);
 		insert_config_signature(sign);
 	}
 
@@ -965,7 +965,7 @@ static int init_user_group(void)
 #ifndef __AROS__ /*not used*/
   set(appicon_show_cycle, MUIA_Cycle_Active, user.config.appicon_show);
 #endif
-	DoMethod(startup_folder_tree, MUIM_Notify, MUIA_NListtree_DoubleClick, MUIV_EveryTime, (ULONG)startup_folder_popobject, 2, MUIM_Popstring_Close, TRUE);
+	DoMethod(startup_folder_tree, MUIM_Notify, MUIA_NListtree_DoubleClick, MUIV_EveryTime, (IPTR)startup_folder_popobject, 2, MUIM_Popstring_Close, TRUE);
 	config_refresh_folders();
 	if (user.config.startup_folder_name)
 	{
@@ -1058,8 +1058,8 @@ static int init_tcpip_receive_group(void)
 
 	set(receive_sound_string,MUIA_String_Contents,user.config.receive_sound_file);
 
-	DoMethod(receive_arexx_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)receive_arexx_popasl, 3, MUIM_Set, MUIA_Disabled, MUIV_NotTriggerValue);
-	DoMethod(receive_sound_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)receive_sound_string, 3, MUIM_Set, MUIA_Disabled, MUIV_NotTriggerValue);
+	DoMethod(receive_arexx_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)receive_arexx_popasl, 3, MUIM_Set, MUIA_Disabled, MUIV_NotTriggerValue);
+	DoMethod(receive_sound_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)receive_sound_string, 3, MUIM_Set, MUIA_Disabled, MUIV_NotTriggerValue);
 
 	return 1;
 }
@@ -1074,7 +1074,7 @@ static void account_add(void)
 	{
 		account->account_name = utf8create(_("-- New Account --"),user.config.default_codeset?user.config.default_codeset->name:NULL);
 
-		DoMethod(account_account_list, MUIM_NList_InsertSingle, (ULONG)account, MUIV_NList_Insert_Bottom);
+		DoMethod(account_account_list, MUIM_NList_InsertSingle, (IPTR)account, MUIV_NList_Insert_Bottom);
 		set(account_account_list, MUIA_NList_Active, MUIV_NList_Active_Bottom);
 
 		set(account_account_name_string, MUIA_BetterString_SelectSize, -utf8len(account->account_name));
@@ -1090,7 +1090,7 @@ static void account_test(void)
 	struct account *ac;
 
 	account_store();
-	DoMethod(account_account_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&ac);
+	DoMethod(account_account_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&ac);
 
 	if (!ac) return;
 
@@ -1103,7 +1103,7 @@ static void account_test(void)
 static void account_remove(void)
 {
 	struct account *ac;
-	DoMethod(account_account_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&ac);
+	DoMethod(account_account_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&ac);
 	if (ac)
 	{
 		account_last_selected = NULL;
@@ -1118,7 +1118,7 @@ static void account_remove(void)
 static void account_selected(void)
 {
 	account_store();
-	DoMethod(account_account_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&account_last_selected);
+	DoMethod(account_account_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&account_last_selected);
 	account_load();
 }
 
@@ -1144,7 +1144,7 @@ static void account_refresh_signature_cycle(void)
 	list_init(&tmp_signature_list);
 	for (i=0;i<xget(signature_signature_list,MUIA_NList_Entries);i++)
 	{
-		DoMethod(signature_signature_list, MUIM_NList_GetEntry, i, (ULONG)&sign);
+		DoMethod(signature_signature_list, MUIM_NList_GetEntry, i, (IPTR)&sign);
 		new_sign = signature_malloc();
 		if (new_sign)
 		{
@@ -1155,7 +1155,7 @@ static void account_refresh_signature_cycle(void)
 	}
 
 	DoMethod(account_user_group, MUIM_Group_InitChange);
-	DoMethod(account_def_signature_cycle, MUIM_SignatureCycle_Refresh, (ULONG)&tmp_signature_list);
+	DoMethod(account_def_signature_cycle, MUIM_SignatureCycle_Refresh, (IPTR)&tmp_signature_list);
 	DoMethod(account_user_group, MUIM_Group_ExitChange);
 
 	/* free the temporary list */
@@ -1438,33 +1438,33 @@ static int init_account_group(void)
 
 	if (!groups[GROUPS_ACCOUNT]) SM_RETURN(0,"%ld");
 
-	DoMethod(account_account_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_selected);
+	DoMethod(account_account_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_selected);
 
 	/* connect the up/down keys to the List */
 	set(account_account_name_string, MUIA_String_AttachedList, account_account_list);
 
 	/* Update the account_list if one of the displayed fields are changed */
 	/* This fields must be set without notification in the account_load() function! */
-	DoMethod(account_account_name_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_update);
-	DoMethod(account_email_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_update);
-	DoMethod(account_recv_server_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_update);
-	DoMethod(account_send_server_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_update);
+	DoMethod(account_account_name_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_update);
+	DoMethod(account_email_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_update);
+	DoMethod(account_recv_server_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_update);
+	DoMethod(account_send_server_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_update);
 
-	DoMethod(account_send_auth_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)account_send_login_string, 3, MUIM_Set, MUIA_Disabled, MUIV_NotTriggerValue);
-	DoMethod(account_send_auth_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)account_send_password_string, 3, MUIM_Set, MUIA_Disabled, MUIV_NotTriggerValue);
-	DoMethod(account_send_auth_check, MUIM_Notify, MUIA_Selected, TRUE, MUIV_Notify_Window, 3, MUIM_Set, MUIA_Window_ActiveObject, (ULONG)account_send_login_string);
+	DoMethod(account_send_auth_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)account_send_login_string, 3, MUIM_Set, MUIA_Disabled, MUIV_NotTriggerValue);
+	DoMethod(account_send_auth_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)account_send_password_string, 3, MUIM_Set, MUIA_Disabled, MUIV_NotTriggerValue);
+	DoMethod(account_send_auth_check, MUIM_Notify, MUIA_Selected, TRUE, MUIV_Notify_Window, 3, MUIM_Set, MUIA_Window_ActiveObject, (IPTR)account_send_login_string);
 
-	DoMethod(account_recv_secure_cycle, MUIM_Notify, MUIA_Cycle_Active, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_recv_port_update);
-	DoMethod(account_recv_type_radio, MUIM_Notify, MUIA_Radio_Active, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_recv_port_update);
-	DoMethod(account_recv_ask_checkbox, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)account_recv_password_string, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
+	DoMethod(account_recv_secure_cycle, MUIM_Notify, MUIA_Cycle_Active, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_recv_port_update);
+	DoMethod(account_recv_type_radio, MUIM_Notify, MUIA_Radio_Active, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_recv_port_update);
+	DoMethod(account_recv_ask_checkbox, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)account_recv_password_string, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
 
-	DoMethod(account_add_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_add);
-	DoMethod(account_test_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_test);
-	DoMethod(account_remove_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)account_remove);
+	DoMethod(account_add_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_add);
+	DoMethod(account_test_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_test);
+	DoMethod(account_remove_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)account_remove);
 
-	DoMethod(account_recv_type_radio, MUIM_Notify, MUIA_Radio_Active, MUIV_EveryTime, (ULONG)account_recv_avoid_check, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
-	DoMethod(account_recv_type_radio, MUIM_Notify, MUIA_Radio_Active, MUIV_EveryTime, (ULONG)account_recv_apop_cycle, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
-	DoMethod(account_recv_type_radio, MUIM_Notify, MUIA_Radio_Active, MUIV_EveryTime, (ULONG)account_recv_delete_check, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
+	DoMethod(account_recv_type_radio, MUIM_Notify, MUIA_Radio_Active, MUIV_EveryTime, (IPTR)account_recv_avoid_check, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
+	DoMethod(account_recv_type_radio, MUIM_Notify, MUIA_Radio_Active, MUIV_EveryTime, (IPTR)account_recv_apop_cycle, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
+	DoMethod(account_recv_type_radio, MUIM_Notify, MUIA_Radio_Active, MUIV_EveryTime, (IPTR)account_recv_delete_check, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
 
 	set(account_recv_secure_cycle, MUIA_Weight, 0);
 	set(account_send_secure_cycle, MUIA_Weight, 0);
@@ -1641,7 +1641,7 @@ static int init_mails_readmisc_group(void)
                                                          "the other direction and closes the window only if no other mail exists within "
                                                          "the folder."));
 
-	DoMethod(mails_readmisc_all_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)mails_readmisc_check_group, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
+	DoMethod(mails_readmisc_all_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)mails_readmisc_check_group, 3, MUIM_Set, MUIA_Disabled, MUIV_TriggerValue);
 	if (user.config.header_flags & SHOW_HEADER_ALL) set(mails_readmisc_all_check, MUIA_Selected, TRUE);
 	for (i=0;i<sizeof(mails_readmisc_check)/sizeof(Object*);i++)
 	{
@@ -1808,7 +1808,7 @@ static void signature_add(void)
 	{
 		s->name = utf8create(_("-- New Signature --"),user.config.default_codeset?user.config.default_codeset->name:NULL);
 
-		DoMethod(signature_signature_list, MUIM_NList_InsertSingle, (ULONG)s, MUIV_NList_Insert_Bottom);
+		DoMethod(signature_signature_list, MUIM_NList_InsertSingle, (IPTR)s, MUIV_NList_Insert_Bottom);
 		set(signature_signature_list, MUIA_NList_Active, MUIV_NList_Active_Bottom);
 
 		set(signature_name_string, MUIA_BetterString_SelectSize, -utf8len(s->name));
@@ -1822,7 +1822,7 @@ static void signature_add(void)
 static void signature_remove(void)
 {
 	struct signature *sign;
-	DoMethod(signature_signature_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&sign);
+	DoMethod(signature_signature_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&sign);
 	if (sign)
 	{
 		struct account *ac;
@@ -1832,7 +1832,7 @@ static void signature_remove(void)
 		/* Check if the signature is used in any of the accounts */
 		for (i=0;i<xget(account_account_list,MUIA_NList_Entries);i++)
 		{
-			DoMethod(account_account_list,MUIM_NList_GetEntry, i, (ULONG)&ac);
+			DoMethod(account_account_list,MUIM_NList_GetEntry, i, (IPTR)&ac);
 			if (mystrcmp(ac->def_signature, sign->name) == 0)
 			{
 				use_count_accounts++;
@@ -1858,7 +1858,7 @@ static void signature_remove(void)
 		/* The Signature will be deleted, we have to reassign the accounts */
 		for (i=0;i<xget(account_account_list,MUIA_NList_Entries);i++)
 		{
-			DoMethod(account_account_list,MUIM_NList_GetEntry, i, (ULONG)&ac);
+			DoMethod(account_account_list,MUIM_NList_GetEntry, i, (IPTR)&ac);
 			/* set to default all accounts with the deleted signature */
 			if (mystrcmp(ac->def_signature, sign->name) == 0)
 			{
@@ -1886,7 +1886,7 @@ static void signature_remove(void)
 static void signature_selected(void)
 {
 	signature_store();
-	DoMethod(signature_signature_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&signature_last_selected);
+	DoMethod(signature_signature_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&signature_last_selected);
 	signature_load();
 }
 
@@ -1992,14 +1992,14 @@ static int init_signature_group(void)
 
 	/* Keep the list in sync with the field. */
 	/* This field must be set without notification in the signature_load() function! */
-	DoMethod(signature_name_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)signature_update);
+	DoMethod(signature_name_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)signature_update);
 
-	DoMethod(tagline_button, MUIM_Notify, MUIA_Pressed,FALSE, (ULONG)signature_texteditor, 3, MUIM_TextEditor_InsertText, (ULONG)"%t\n", MUIV_TextEditor_InsertText_Cursor);
-	DoMethod(env_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)signature_texteditor, 3, MUIM_TextEditor_InsertText, (ULONG)"%e", MUIV_TextEditor_InsertText_Cursor);
+	DoMethod(tagline_button, MUIM_Notify, MUIA_Pressed,FALSE, (IPTR)signature_texteditor, 3, MUIM_TextEditor_InsertText, (IPTR)"%t\n", MUIV_TextEditor_InsertText_Cursor);
+	DoMethod(env_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)signature_texteditor, 3, MUIM_TextEditor_InsertText, (IPTR)"%e", MUIV_TextEditor_InsertText_Cursor);
 
-	DoMethod(add_button,MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)signature_add);
-	DoMethod(rem_button,MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)signature_remove);
-	DoMethod(signature_signature_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook,  (ULONG)&hook_standard, (ULONG)signature_selected);
+	DoMethod(add_button,MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)signature_add);
+	DoMethod(rem_button,MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)signature_remove);
+	DoMethod(signature_signature_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook,  (IPTR)&hook_standard, (IPTR)signature_selected);
 	SM_RETURN(1,"%ld");
 }
 
@@ -2013,7 +2013,7 @@ static void phrase_add(void)
 	{
 		p->addresses = utf8create(_("-- New Phrase --"),user.config.default_codeset?user.config.default_codeset->name:NULL);
 
-		DoMethod(phrase_phrase_list, MUIM_NList_InsertSingle, (ULONG)p, MUIV_NList_Insert_Bottom);
+		DoMethod(phrase_phrase_list, MUIM_NList_InsertSingle, (IPTR)p, MUIV_NList_Insert_Bottom);
 		set(phrase_phrase_list, MUIA_NList_Active, MUIV_NList_Active_Bottom);
 
 		set(phrase_addresses_string, MUIA_BetterString_SelectSize, -utf8len(p->addresses));
@@ -2027,11 +2027,11 @@ static void phrase_add(void)
 static void phrase_dup(void)
 {
 	struct phrase *phr;
-	DoMethod(phrase_phrase_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&phr);
+	DoMethod(phrase_phrase_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&phr);
 	phr = phrase_duplicate(phr);
 	if (phr)
 	{
-		DoMethod(phrase_phrase_list, MUIM_NList_InsertSingle, (ULONG)phr, MUIV_NList_Insert_Bottom);
+		DoMethod(phrase_phrase_list, MUIM_NList_InsertSingle, (IPTR)phr, MUIV_NList_Insert_Bottom);
 		set(phrase_phrase_list, MUIA_NList_Active, MUIV_NList_Active_Bottom);
 	}
 }
@@ -2042,7 +2042,7 @@ static void phrase_dup(void)
 static void phrase_remove(void)
 {
 	struct phrase *phr;
-	DoMethod(phrase_phrase_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&phr);
+	DoMethod(phrase_phrase_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&phr);
 	if (phr)
 	{
 		phrase_last_selected = NULL;
@@ -2057,7 +2057,7 @@ static void phrase_remove(void)
 static void phrase_selected(void)
 {
 	phrase_store();
-	DoMethod(phrase_phrase_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&phrase_last_selected);
+	DoMethod(phrase_phrase_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&phrase_last_selected);
 	phrase_load();
 }
 
@@ -2263,12 +2263,12 @@ static int init_phrase_group(void)
 
 	/* Keep the list in sync with the field. */
 	/* This field must be set without notification in the signature_load() function! */
-	DoMethod(phrase_addresses_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)phrase_update);
+	DoMethod(phrase_addresses_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)phrase_update);
 
-	DoMethod(add_button, MUIM_Notify, MUIA_Pressed,FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)phrase_add);
-	DoMethod(dup_button, MUIM_Notify, MUIA_Pressed,FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)phrase_dup);
-	DoMethod(rem_button, MUIM_Notify, MUIA_Pressed,FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)phrase_remove);
-	DoMethod(phrase_phrase_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)phrase_selected);
+	DoMethod(add_button, MUIM_Notify, MUIA_Pressed,FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)phrase_add);
+	DoMethod(dup_button, MUIM_Notify, MUIA_Pressed,FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)phrase_dup);
+	DoMethod(rem_button, MUIM_Notify, MUIA_Pressed,FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)phrase_remove);
+	DoMethod(phrase_phrase_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)phrase_selected);
 	SM_RETURN(1,"%ld");
 }
 
@@ -2284,7 +2284,7 @@ static void spam_cfg_reset_ham(void)
 		_("Reset the statistics|Cancel"))) return;
 
 	spam_reset_ham();
-	DoMethod(spam_ham_text,MUIM_SetAsString, MUIA_Text_Contents, (ULONG)"%ld",
+	DoMethod(spam_ham_text,MUIM_SetAsString, MUIA_Text_Contents, (IPTR)"%ld",
 				spam_num_of_ham_classified_mails());
 }
 
@@ -2311,7 +2311,7 @@ static void spam_cfg_reset_spam(void)
 		callback_add_spam_folder_to_statistics();
 	}
 
-	DoMethod(spam_spam_text,MUIM_SetAsString, MUIA_Text_Contents, (ULONG)"%ld",
+	DoMethod(spam_spam_text,MUIM_SetAsString, MUIA_Text_Contents, (IPTR)"%ld",
 				spam_num_of_spam_classified_mails());
 }
 
@@ -2408,8 +2408,8 @@ static int init_spam_group(void)
 	set(spam_reset_ham_stat_button, MUIA_ShortHelp, _("Resets all ham statistics."));
 	set(spam_reset_spam_stat_button, MUIA_ShortHelp, _("Resets all spam statistics."));
 
-	DoMethod(spam_reset_ham_stat_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)spam_cfg_reset_ham);
-	DoMethod(spam_reset_spam_stat_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)spam_cfg_reset_spam);
+	DoMethod(spam_reset_ham_stat_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)spam_cfg_reset_ham);
+	DoMethod(spam_reset_spam_stat_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)spam_cfg_reset_spam);
 
 	SM_RETURN(1,"%ld");
 }
@@ -2513,18 +2513,18 @@ static void init_config_window(void)
 		image_prefs_phrase_obj = PictureButtonObject, MUIA_PictureButton_Directory, gui_get_images_directory(), MUIA_PictureButton_Filename, "prefs_phrase", End;
 		image_prefs_spam_obj = PictureButtonObject, MUIA_PictureButton_Directory, gui_get_images_directory(), MUIA_PictureButton_Filename, "prefs_spam", End;
 
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_main_obj,      GROUPS_USER, 0);
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_account_obj,   GROUPS_ACCOUNT, 0);
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_receive_obj,   GROUPS_RECEIVE, 0);
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_write_obj,     GROUPS_WRITE, 0);
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_read_obj,      GROUPS_READMISC, 0);
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_readplain_obj, GROUPS_READ, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_main_obj,      GROUPS_USER, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_account_obj,   GROUPS_ACCOUNT, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_receive_obj,   GROUPS_RECEIVE, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_write_obj,     GROUPS_WRITE, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_read_obj,      GROUPS_READMISC, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_readplain_obj, GROUPS_READ, 0);
 #ifndef __AROS__ /*no html*/
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_readhtml_obj,  GROUPS_READHTML, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_readhtml_obj,  GROUPS_READHTML, 0);
 #endif
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_signature_obj, GROUPS_SIGNATURE, 0);
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_phrase_obj,    GROUPS_PHRASE, 0);
-		DoMethod(config_list, MUIM_NList_UseImage, (ULONG)image_prefs_spam_obj,      GROUPS_SPAM, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_signature_obj, GROUPS_SIGNATURE, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_phrase_obj,    GROUPS_PHRASE, 0);
+		DoMethod(config_list, MUIM_NList_UseImage, (IPTR)image_prefs_spam_obj,      GROUPS_SPAM, 0);
 
 		sprintf(texts[GROUPS_USER],     "\033o[%d] %s", GROUPS_USER,     _("General"));
 		sprintf(texts[GROUPS_ACCOUNT],  "\033o[%d] %s", GROUPS_ACCOUNT,  _("Accounts"));
@@ -2547,16 +2547,16 @@ static void init_config_window(void)
 		set(use_button, MUIA_ShortHelp, _("Use the configuration, but don't save it."));
 		set(cancel_button, MUIA_ShortHelp, _("Discards all the changes you have made."));
 
-		DoMethod(App, OM_ADDMEMBER, (ULONG)config_wnd);
-		DoMethod(config_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)config_cancel);
-		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)config_cancel);
-		DoMethod(use_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)config_use);
-		DoMethod(save_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 6, MUIM_Application_PushMethod, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)config_save);
-		DoMethod(config_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (ULONG)App, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)config_selected);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)config_wnd);
+		DoMethod(config_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)config_cancel);
+		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)config_cancel);
+		DoMethod(use_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)config_use);
+		DoMethod(save_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 6, MUIM_Application_PushMethod, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)config_save);
+		DoMethod(config_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (IPTR)App, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)config_selected);
 
 		for (i=0;i<GROUPS_MAX;i++)
 		{
-			DoMethod(config_list, MUIM_NList_InsertSingle, (ULONG)texts[i], MUIV_NList_Insert_Bottom);
+			DoMethod(config_list, MUIM_NList_InsertSingle, (IPTR)texts[i], MUIV_NList_Insert_Bottom);
 		}
 
 		set(config_list,MUIA_NList_Active,0);
@@ -2570,7 +2570,7 @@ static void init_config_window(void)
 				struct account *new_account = account_duplicate(account);
 				if (new_account)
 				{
-					DoMethod(account_account_list, MUIM_NList_InsertSingle, (ULONG)new_account, MUIV_NList_Insert_Bottom);
+					DoMethod(account_account_list, MUIM_NList_InsertSingle, (IPTR)new_account, MUIV_NList_Insert_Bottom);
 				}
 				account = (struct account*)node_next(&account->node);
 			}
@@ -2586,7 +2586,7 @@ static void init_config_window(void)
 				struct phrase *new_phrase = phrase_duplicate(phrase);
 				if (new_phrase)
 				{
-					DoMethod(phrase_phrase_list, MUIM_NList_InsertSingle, (ULONG)new_phrase, MUIV_NList_Insert_Bottom);
+					DoMethod(phrase_phrase_list, MUIM_NList_InsertSingle, (IPTR)new_phrase, MUIV_NList_Insert_Bottom);
 				}
 				phrase = (struct phrase*)node_next(&phrase->node);
 			}
@@ -2602,7 +2602,7 @@ static void init_config_window(void)
 				struct signature *new_signature = signature_duplicate(signature);
 				if (new_signature)
 				{
-					DoMethod(signature_signature_list, MUIM_NList_InsertSingle, (ULONG)new_signature, MUIV_NList_Insert_Bottom);
+					DoMethod(signature_signature_list, MUIM_NList_InsertSingle, (IPTR)new_signature, MUIV_NList_Insert_Bottom);
 				}
 				signature = (struct signature*)node_next(&signature->node);
 			}
@@ -2635,7 +2635,7 @@ void close_config(void)
 		unsigned int i;
 
 		set(config_wnd, MUIA_Window_Open, FALSE);
-		DoMethod(App, OM_REMMEMBER, (ULONG)config_wnd);
+		DoMethod(App, OM_REMMEMBER, (IPTR)config_wnd);
 
 		account_last_selected = NULL;
 		phrase_last_selected = NULL;
@@ -2645,7 +2645,7 @@ void close_config(void)
 		for (i=0;i<xget(account_account_list,MUIA_NList_Entries);i++)
 		{
 			struct account *ac;
-			DoMethod(account_account_list,MUIM_NList_GetEntry, i, (ULONG)&ac);
+			DoMethod(account_account_list,MUIM_NList_GetEntry, i, (IPTR)&ac);
 			account_free(ac);
 		}
 

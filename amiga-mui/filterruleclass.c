@@ -193,7 +193,7 @@ STATIC BOOL FilterRule_CreateObjects(struct FilterRule_Data *data)
 	{
 		data->object1 = MakeCycle(NULL,status_labels);
 		data->object2 = PictureButtonObject, End;
-		DoMethod(data->object1, MUIM_Notify, MUIA_Cycle_Active, MUIV_EveryTime, (ULONG)App, 5, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)status_cycle_active, (ULONG)data->object1, (ULONG)data->object2);
+		DoMethod(data->object1, MUIM_Notify, MUIA_Cycle_Active, MUIV_EveryTime, (IPTR)App, 5, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)status_cycle_active, (IPTR)data->object1, (IPTR)data->object2);
 	}
 
 	data->flags = 0;
@@ -230,9 +230,9 @@ STATIC BOOL FilterRule_CreateObjects(struct FilterRule_Data *data)
 		    		set(data->patt_check, MUIA_ShortHelp, patt_help_txt);
 
 		    		data->flags = SM_PATTERN_NOCASE|SM_PATTERN_NOPATT;
-		    		DoMethod(data->substr_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)FilterRule_FlagsUpdate, (ULONG)data);
-		    		DoMethod(data->case_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)FilterRule_FlagsUpdate, (ULONG)data);
-		    		DoMethod(data->patt_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)FilterRule_FlagsUpdate, (ULONG)data);
+		    		DoMethod(data->substr_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)FilterRule_FlagsUpdate, (IPTR)data);
+		    		DoMethod(data->case_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)FilterRule_FlagsUpdate, (IPTR)data);
+		    		DoMethod(data->patt_check, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)FilterRule_FlagsUpdate, (IPTR)data);
 		    	}
 		    	break;
 	}
@@ -242,22 +242,22 @@ STATIC BOOL FilterRule_CreateObjects(struct FilterRule_Data *data)
 		group1 = HGroup, End;
 		if (group1)
 		{
-			if (data->object1) DoMethod(group1, OM_ADDMEMBER, (ULONG)data->object1);
-			if (data->object2) DoMethod(group1, OM_ADDMEMBER, (ULONG)data->object2);
-			if (data->object3) DoMethod(group1, OM_ADDMEMBER, (ULONG)data->object3);
-			if (data->object4) DoMethod(group1, OM_ADDMEMBER, (ULONG)data->object4);
+			if (data->object1) DoMethod(group1, OM_ADDMEMBER, (IPTR)data->object1);
+			if (data->object2) DoMethod(group1, OM_ADDMEMBER, (IPTR)data->object2);
+			if (data->object3) DoMethod(group1, OM_ADDMEMBER, (IPTR)data->object3);
+			if (data->object4) DoMethod(group1, OM_ADDMEMBER, (IPTR)data->object4);
 		}
 	}
 
 	if (group1)
-		DoMethod(data->group, OM_ADDMEMBER, (ULONG)group1);
+		DoMethod(data->group, OM_ADDMEMBER, (IPTR)group1);
 	else
-		DoMethod(data->group, OM_ADDMEMBER, (ULONG)HVSpace);
+		DoMethod(data->group, OM_ADDMEMBER, (IPTR)HVSpace);
 
 	if (group2)
 	{
-		DoMethod(data->group, OM_ADDMEMBER, (ULONG)group2);
-		DoMethod(data->group, OM_ADDMEMBER, (ULONG)RectangleObject,MUIA_Rectangle_HBar, TRUE, End);
+		DoMethod(data->group, OM_ADDMEMBER, (IPTR)group2);
+		DoMethod(data->group, OM_ADDMEMBER, (IPTR)RectangleObject,MUIA_Rectangle_HBar, TRUE, End);
 	}
 
 	DoMethod(data->group, MUIM_Group_ExitChange);
@@ -350,9 +350,9 @@ STATIC ULONG FilterRule_New(struct IClass *cl,Object *obj,struct opSet *msg)
 		FilterRule_SetRule(data,(struct filter_rule*)ti->ti_Data);
 	} else FilterRule_CreateObjects(data);
 
-	DoMethod(data->type_cycle, MUIM_Notify,MUIA_Cycle_Active, MUIV_EveryTime, (ULONG)obj, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)FilterRule_TypeCycleActive, (ULONG)data);
+	DoMethod(data->type_cycle, MUIM_Notify,MUIA_Cycle_Active, MUIV_EveryTime, (IPTR)obj, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)FilterRule_TypeCycleActive, (IPTR)data);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -417,7 +417,7 @@ STATIC ULONG FilterRule_Get(struct IClass *cl, Object *obj, struct opGet *msg)
 									data->get_rule.u.status.status = (int)xget(data->object1,MUIA_Cycle_Active);
 									break;
 					}
-					*msg->opg_Storage = (ULONG)&data->get_rule;
+					*msg->opg_Storage = (IPTR)&data->get_rule;
 					return TRUE;
 					break;
 
@@ -475,7 +475,7 @@ STATIC ULONG FilterRule_DragQuery(struct IClass *cl,Object *obj,struct MUIP_Drag
  */
 static struct mail_info *FilterRule_Get_First_Mail_Info(void *handle, void *userdata)
 {
-	return (struct mail_info*)DoMethod((Object *)userdata, MUIM_MailTreelist_GetFirstSelected, (ULONG)handle);
+	return (struct mail_info*)DoMethod((Object *)userdata, MUIM_MailTreelist_GetFirstSelected, (IPTR)handle);
 }
 
 /**
@@ -487,7 +487,7 @@ static struct mail_info *FilterRule_Get_First_Mail_Info(void *handle, void *user
  */
 static struct mail_info *FilterRule_Get_Next_Mail_Info(void *handle, void *userdata)
 {
-	return (struct mail_info*)DoMethod((Object *)userdata, MUIM_MailTreelist_GetNextSelected, (ULONG)handle);
+	return (struct mail_info*)DoMethod((Object *)userdata, MUIM_MailTreelist_GetNextSelected, (IPTR)handle);
 }
 
 

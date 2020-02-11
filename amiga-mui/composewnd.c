@@ -169,7 +169,7 @@ static void compose_window_dispose(struct Compose_Data **pdata)
 {
 	struct Compose_Data *data = *pdata;
 	set(data->wnd,MUIA_Window_Open,FALSE);
-	DoMethod(App, OM_REMMEMBER, (ULONG)data->wnd);
+	DoMethod(App, OM_REMMEMBER, (IPTR)data->wnd);
 	set(data->datatype_datatypes, MUIA_DataTypes_FileName, NULL);
 	if (data->reply_stuff_attached == 0)
 	{
@@ -354,13 +354,13 @@ static void compose_add_attachment(struct Compose_Data *data, struct attachment 
 			quiet = 1;
 			set(data->attach_tree, MUIA_NListtree_Quiet, TRUE);
 
-			insertlist = (struct MUI_NListtree_TreeNode *)DoMethod(data->attach_tree, MUIM_NListtree_Insert, (ULONG)"", (ULONG)&multipart,
+			insertlist = (struct MUI_NListtree_TreeNode *)DoMethod(data->attach_tree, MUIM_NListtree_Insert, (IPTR)"", (IPTR)&multipart,
 					MUIV_NListtree_Insert_ListNode_ActiveFallback, MUIV_NListtree_Insert_PrevNode_Tail,TNF_OPEN|TNF_LIST);
 
 			if (insertlist)
 			{
 				DoMethod(data->attach_tree, MUIM_NListtree_Move, MUIV_NListtree_Move_OldListNode_Active, MUIV_NListtree_Move_OldTreeNode_Active,
-								(ULONG)insertlist, MUIV_NListtree_Move_NewTreeNode_Tail);
+								(IPTR)insertlist, MUIV_NListtree_Move_NewTreeNode_Tail);
 			} else
 			{
 				set(data->attach_tree, MUIA_NListtree_Quiet, FALSE);
@@ -371,13 +371,13 @@ static void compose_add_attachment(struct Compose_Data *data, struct attachment 
 
 	act = !xget(data->attach_tree, MUIA_NListtree_Active);
 
-	treenode = (struct MUI_NListtree_TreeNode *)DoMethod(data->attach_tree, MUIM_NListtree_Insert, (ULONG)"" /*name*/, (ULONG)attach, /* udata */
-					 (ULONG)insertlist,MUIV_NListtree_Insert_PrevNode_Tail, (list?(TNF_OPEN|TNF_LIST):(act?MUIV_NListtree_Insert_Flag_Active:0)));
+	treenode = (struct MUI_NListtree_TreeNode *)DoMethod(data->attach_tree, MUIM_NListtree_Insert, (IPTR)"" /*name*/, (IPTR)attach, /* udata */
+					 (IPTR)insertlist,MUIV_NListtree_Insert_PrevNode_Tail, (list?(TNF_OPEN|TNF_LIST):(act?MUIV_NListtree_Insert_Flag_Active:0)));
 
 	/* for the quick attachments list */
 	if (!list && treenode)
 	{
-		DoMethod(data->quick_attach_tree, MUIM_NListtree_Insert, (ULONG)"", (ULONG)attach, /* udata */
+		DoMethod(data->quick_attach_tree, MUIM_NListtree_Insert, (IPTR)"", (IPTR)attach, /* udata */
 					MUIV_NListtree_Insert_ListNode_Root, MUIV_NListtree_Insert_PrevNode_Tail, (act?MUIV_NListtree_Insert_Flag_Active:0));
 	}
 
@@ -1088,7 +1088,7 @@ void compose_refresh_signature_cycle()
 			if (data->signatures_cycle)
 			{
 				DoMethod(data->signatures_group, MUIM_Group_InitChange);
-				DoMethod(data->signatures_cycle, MUIM_SignatureCycle_Refresh, (ULONG)&user.config.signature_list);
+				DoMethod(data->signatures_cycle, MUIM_SignatureCycle_Refresh, (IPTR)&user.config.signature_list);
 				DoMethod(data->signatures_group, MUIM_Group_ExitChange);
 			}
 		}
@@ -1127,30 +1127,30 @@ static void compose_reply_button(void **msg)
 	DoMethod(group,MUIM_Group_InitChange);
 	if (data->reply_stuff_attached && !reply_selected)
 	{
-		DoMethod(group, OM_REMMEMBER, (ULONG)data->reply_label);
-		DoMethod(group, OM_REMMEMBER, (ULONG)data->reply_string);
+		DoMethod(group, OM_REMMEMBER, (IPTR)data->reply_label);
+		DoMethod(group, OM_REMMEMBER, (IPTR)data->reply_string);
 		data->reply_stuff_attached = 0;
 	} else
 	{
 		if (!data->reply_stuff_attached && reply_selected)
 		{
-			DoMethod(group, OM_ADDMEMBER, (ULONG)data->reply_label);
-			DoMethod(group, OM_ADDMEMBER, (ULONG)data->reply_string);
+			DoMethod(group, OM_ADDMEMBER, (IPTR)data->reply_label);
+			DoMethod(group, OM_ADDMEMBER, (IPTR)data->reply_string);
 			if (data->bcc_stuff_attached)
 			{
-				DoMethod(group,MUIM_Group_Sort, (ULONG)data->from_label, (ULONG)data->from_group,
-				                                (ULONG)data->reply_label, (ULONG)data->reply_string,
-				                                (ULONG)data->to_label, (ULONG)data->to_group,
-				                                (ULONG)data->cc_label, (ULONG)data->cc_group,
-				                                (ULONG)data->bcc_label, (ULONG)data->bcc_group,
-				                                (ULONG)data->subject_label, (ULONG)data->subject_string, NULL);
+				DoMethod(group,MUIM_Group_Sort, (IPTR)data->from_label, (IPTR)data->from_group,
+				                                (IPTR)data->reply_label, (IPTR)data->reply_string,
+				                                (IPTR)data->to_label, (IPTR)data->to_group,
+				                                (IPTR)data->cc_label, (IPTR)data->cc_group,
+				                                (IPTR)data->bcc_label, (IPTR)data->bcc_group,
+				                                (IPTR)data->subject_label, (IPTR)data->subject_string, NULL);
 			} else
 			{
-				DoMethod(group,MUIM_Group_Sort, (ULONG)data->from_label, (ULONG)data->from_group,
-				                                (ULONG)data->reply_label, (ULONG)data->reply_string,
-				                                (ULONG)data->to_label, (ULONG)data->to_group,
-				                                (ULONG)data->cc_label, (ULONG)data->cc_group,
-				                                (ULONG)data->subject_label, (ULONG)data->subject_string,NULL);
+				DoMethod(group,MUIM_Group_Sort, (IPTR)data->from_label, (IPTR)data->from_group,
+				                                (IPTR)data->reply_label, (IPTR)data->reply_string,
+				                                (IPTR)data->to_label, (IPTR)data->to_group,
+				                                (IPTR)data->cc_label, (IPTR)data->cc_group,
+				                                (IPTR)data->subject_label, (IPTR)data->subject_string,NULL);
 			}
 			data->reply_stuff_attached = 1;
 		}
@@ -1174,30 +1174,30 @@ static void compose_bcc_button(void **msg)
 	DoMethod(group,MUIM_Group_InitChange);
 	if (data->bcc_stuff_attached && !bcc_selected)
 	{
-		DoMethod(group, OM_REMMEMBER, (ULONG)data->bcc_label);
-		DoMethod(group, OM_REMMEMBER, (ULONG)data->bcc_group);
+		DoMethod(group, OM_REMMEMBER, (IPTR)data->bcc_label);
+		DoMethod(group, OM_REMMEMBER, (IPTR)data->bcc_group);
 		data->bcc_stuff_attached = 0;
 	} else
 	{
 		if (!data->bcc_stuff_attached && bcc_selected)
 		{
-			DoMethod(group, OM_ADDMEMBER, (ULONG)data->bcc_label);
-			DoMethod(group, OM_ADDMEMBER, (ULONG)data->bcc_group);
+			DoMethod(group, OM_ADDMEMBER, (IPTR)data->bcc_label);
+			DoMethod(group, OM_ADDMEMBER, (IPTR)data->bcc_group);
 			if (data->reply_stuff_attached)
 			{
-				DoMethod(group,MUIM_Group_Sort, (ULONG)data->from_label, (ULONG)data->from_group,
-				                                (ULONG)data->reply_label, (ULONG)data->reply_string,
-				                                (ULONG)data->to_label, (ULONG)data->to_group,
-				                                (ULONG)data->cc_label, (ULONG)data->cc_group,
-				                                (ULONG)data->bcc_label, (ULONG)data->bcc_group,
-				                                (ULONG)data->subject_label, (ULONG)data->subject_string, NULL);
+				DoMethod(group,MUIM_Group_Sort, (IPTR)data->from_label, (IPTR)data->from_group,
+				                                (IPTR)data->reply_label, (IPTR)data->reply_string,
+				                                (IPTR)data->to_label, (IPTR)data->to_group,
+				                                (IPTR)data->cc_label, (IPTR)data->cc_group,
+				                                (IPTR)data->bcc_label, (IPTR)data->bcc_group,
+				                                (IPTR)data->subject_label, (IPTR)data->subject_string, NULL);
 			} else
 			{
-				DoMethod(group,MUIM_Group_Sort, (ULONG)data->from_label, (ULONG)data->from_group,
-				                                (ULONG)data->to_label, (ULONG)data->to_group,
-				                                (ULONG)data->cc_label, (ULONG)data->cc_group,
-				                                (ULONG)data->bcc_label, (ULONG)data->bcc_group,
-				                                (ULONG)data->subject_label, (ULONG)data->subject_string, NULL);
+				DoMethod(group,MUIM_Group_Sort, (IPTR)data->from_label, (IPTR)data->from_group,
+				                                (IPTR)data->to_label, (IPTR)data->to_group,
+				                                (IPTR)data->cc_label, (IPTR)data->cc_group,
+				                                (IPTR)data->bcc_label, (IPTR)data->bcc_group,
+				                                (IPTR)data->subject_label, (IPTR)data->subject_string, NULL);
 			}
 			data->bcc_stuff_attached = 1;
 		}
@@ -1215,8 +1215,8 @@ static void compose_new_active(void **msg)
 	struct Compose_Data *data = (struct Compose_Data *)msg[0];
 	Object *obj = (Object*)msg[1];
 
-	if ((ULONG)obj == (ULONG)MUIV_Window_ActiveObject_Next &&
-		  (ULONG)xget(data->wnd, MUIA_Window_ActiveObject) == (ULONG)data->toolbar)
+	if ((IPTR)obj == (IPTR)MUIV_Window_ActiveObject_Next &&
+		  (IPTR)xget(data->wnd, MUIA_Window_ActiveObject) == (IPTR)data->toolbar)
 	{
 		set(data->wnd, MUIA_Window_ActiveObject, data->text_texteditor);
 	}
@@ -1532,41 +1532,41 @@ int compose_window_open(struct compose_args *args)
 			/* mark the window as opened */
 			compose_open[num] = data;
 
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 7, MUIM_Application_PushMethod, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_window_hold, (ULONG)data);
-			DoMethod(expand_to_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_expand_to, (ULONG)data);
-			DoMethod(expand_cc_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_expand_cc, (ULONG)data);
-			DoMethod(expand_bcc_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_expand_bcc, (ULONG)data);
-			DoMethod(to_string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_expand_to, (ULONG)data);
-			DoMethod(cc_string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_expand_cc, (ULONG)data);
-			DoMethod(bcc_string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_expand_bcc, (ULONG)data);
-			DoMethod(bcc_button, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_bcc_button, (ULONG)data);
-			DoMethod(reply_button, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_reply_button, (ULONG)data);
-			DoMethod(text_texteditor, MUIM_Notify, MUIA_TextEditor_CursorX, MUIV_EveryTime, (ULONG)xcursor_text, 4, MUIM_SetAsString, MUIA_Text_Contents, (ULONG)"%04ld", MUIV_TriggerValue);
-			DoMethod(text_texteditor, MUIM_Notify, MUIA_TextEditor_CursorY, MUIV_EveryTime, (ULONG)ycursor_text, 4, MUIM_SetAsString, MUIA_Text_Contents, (ULONG)"%04ld", MUIV_TriggerValue);
-			DoMethod(text_texteditor, MUIM_Notify, MUIA_TextEditor_UndoAvailable, MUIV_EveryTime, (ULONG)toolbar, 4, MUIM_SMToolbar_SetAttr, SM_COMPOSEWND_BUTTON_UNDO, MUIA_SMToolbar_Attr_Disabled, MUIV_NotTriggerValue);
-			DoMethod(text_texteditor, MUIM_Notify, MUIA_TextEditor_RedoAvailable, MUIV_EveryTime, (ULONG)toolbar, 4, MUIM_SMToolbar_SetAttr, SM_COMPOSEWND_BUTTON_REDO, MUIA_SMToolbar_Attr_Disabled, MUIV_NotTriggerValue);
-			DoMethod(add_text_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_add_text, (ULONG)data);
-			DoMethod(add_multipart_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_add_multipart, (ULONG)data);
-			DoMethod(add_files_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_add_files, (ULONG)data);
-			DoMethod(remove_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_remove_file, (ULONG)data);
-			DoMethod(attach_tree, MUIM_Notify, MUIA_NListtree_Active, MUIV_EveryTime, (ULONG)attach_tree, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_attach_active, (ULONG)data);
-			DoMethod(attach_desc_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_attach_desc, (ULONG)data);
-			DoMethod(quick_attach_tree, MUIM_Notify, MUIA_NListtree_Active, MUIV_EveryTime, (ULONG)quick_attach_tree, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_quick_attach_active, (ULONG)data);
-			DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 7, MUIM_Application_PushMethod, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_window_dispose, (ULONG)data);
-			DoMethod(hold_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 7, MUIM_Application_PushMethod, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_window_hold, (ULONG)data);
-			DoMethod(send_now_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 7, MUIM_Application_PushMethod, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_window_send_now, (ULONG)data);
-			DoMethod(send_later_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_window_send_later, (ULONG)data);
-			DoMethod(subject_string,MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (ULONG)wnd, 3, MUIM_Set, MUIA_Window_ActiveObject, (ULONG)text_texteditor);
-			DoMethod(wnd, MUIM_Notify, MUIA_Window_ActiveObject, MUIV_EveryTime, (ULONG)App, 5, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_new_active, (ULONG)data, MUIV_TriggerValue);
-			DoMethod(from_accountpop, MUIM_Notify, MUIA_AccountPop_Account, MUIV_EveryTime, (ULONG)from_accountpop, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_set_replyto, (ULONG)data);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 7, MUIM_Application_PushMethod, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_window_hold, (IPTR)data);
+			DoMethod(expand_to_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_expand_to, (IPTR)data);
+			DoMethod(expand_cc_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_expand_cc, (IPTR)data);
+			DoMethod(expand_bcc_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_expand_bcc, (IPTR)data);
+			DoMethod(to_string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_expand_to, (IPTR)data);
+			DoMethod(cc_string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_expand_cc, (IPTR)data);
+			DoMethod(bcc_string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_expand_bcc, (IPTR)data);
+			DoMethod(bcc_button, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_bcc_button, (IPTR)data);
+			DoMethod(reply_button, MUIM_Notify, MUIA_Selected, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_reply_button, (IPTR)data);
+			DoMethod(text_texteditor, MUIM_Notify, MUIA_TextEditor_CursorX, MUIV_EveryTime, (IPTR)xcursor_text, 4, MUIM_SetAsString, MUIA_Text_Contents, (IPTR)"%04ld", MUIV_TriggerValue);
+			DoMethod(text_texteditor, MUIM_Notify, MUIA_TextEditor_CursorY, MUIV_EveryTime, (IPTR)ycursor_text, 4, MUIM_SetAsString, MUIA_Text_Contents, (IPTR)"%04ld", MUIV_TriggerValue);
+			DoMethod(text_texteditor, MUIM_Notify, MUIA_TextEditor_UndoAvailable, MUIV_EveryTime, (IPTR)toolbar, 4, MUIM_SMToolbar_SetAttr, SM_COMPOSEWND_BUTTON_UNDO, MUIA_SMToolbar_Attr_Disabled, MUIV_NotTriggerValue);
+			DoMethod(text_texteditor, MUIM_Notify, MUIA_TextEditor_RedoAvailable, MUIV_EveryTime, (IPTR)toolbar, 4, MUIM_SMToolbar_SetAttr, SM_COMPOSEWND_BUTTON_REDO, MUIA_SMToolbar_Attr_Disabled, MUIV_NotTriggerValue);
+			DoMethod(add_text_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_add_text, (IPTR)data);
+			DoMethod(add_multipart_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_add_multipart, (IPTR)data);
+			DoMethod(add_files_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_add_files, (IPTR)data);
+			DoMethod(remove_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_remove_file, (IPTR)data);
+			DoMethod(attach_tree, MUIM_Notify, MUIA_NListtree_Active, MUIV_EveryTime, (IPTR)attach_tree, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_attach_active, (IPTR)data);
+			DoMethod(attach_desc_string, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_attach_desc, (IPTR)data);
+			DoMethod(quick_attach_tree, MUIM_Notify, MUIA_NListtree_Active, MUIV_EveryTime, (IPTR)quick_attach_tree, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_quick_attach_active, (IPTR)data);
+			DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 7, MUIM_Application_PushMethod, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_window_dispose, (IPTR)data);
+			DoMethod(hold_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 7, MUIM_Application_PushMethod, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_window_hold, (IPTR)data);
+			DoMethod(send_now_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 7, MUIM_Application_PushMethod, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_window_send_now, (IPTR)data);
+			DoMethod(send_later_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_window_send_later, (IPTR)data);
+			DoMethod(subject_string,MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (IPTR)wnd, 3, MUIM_Set, MUIA_Window_ActiveObject, (IPTR)text_texteditor);
+			DoMethod(wnd, MUIM_Notify, MUIA_Window_ActiveObject, MUIV_EveryTime, (IPTR)App, 5, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_new_active, (IPTR)data, MUIV_TriggerValue);
+			DoMethod(from_accountpop, MUIM_Notify, MUIA_AccountPop_Account, MUIV_EveryTime, (IPTR)from_accountpop, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_set_replyto, (IPTR)data);
 
 			/* create notifies for toolbar buttons */
-			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_COPY,   7, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (ULONG)"Copy");
-			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_CUT,    7, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (ULONG)"Cut");
-			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_PASTE,  7, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (ULONG)"Paste");
-			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_UNDO,   7, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (ULONG)"Undo");
-			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_REDO,   7, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (ULONG)"Redo");
-			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_ATTACH, 9, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_add_files, (ULONG)data);
+			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_COPY,   7, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (IPTR)"Copy");
+			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_CUT,    7, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (IPTR)"Cut");
+			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_PASTE,  7, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (IPTR)"Paste");
+			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_UNDO,   7, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (IPTR)"Undo");
+			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_REDO,   7, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)text_texteditor, 2, MUIM_TextEditor_ARexxCmd, (IPTR)"Redo");
+			DoMethod(toolbar, MUIM_SMToolbar_DoMethod, SM_COMPOSEWND_BUTTON_ATTACH, 9, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_add_files, (IPTR)data);
 
 			data->reply_stuff_attached = 1;
 			set(data->reply_button,MUIA_Selected,FALSE);
@@ -1574,7 +1574,7 @@ int compose_window_open(struct compose_args *args)
 			set(data->bcc_button,MUIA_Selected,FALSE);
 			set(data->importance_cycle, MUIA_Cycle_Active, 1);
 
-			DoMethod(App,OM_ADDMEMBER, (ULONG)wnd);
+			DoMethod(App,OM_ADDMEMBER, (IPTR)wnd);
 
 			DoMethod(from_accountpop, MUIM_AccountPop_Refresh);
 
@@ -1689,9 +1689,9 @@ int compose_window_open(struct compose_args *args)
 			{
 				struct folder *f = main_get_folder();
 
-				DoMethod(signatures_cycle, MUIM_Notify, MUIA_SignatureCycle_Active, MUIV_EveryTime, (ULONG)signatures_cycle, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_set_signature, (ULONG)data);
-				DoMethod(signatures_cycle, MUIM_Notify, MUIA_SignatureCycle_SignatureName, MUIV_EveryTime, (ULONG)signatures_cycle, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_set_signature, (ULONG)data);
-				DoMethod(from_accountpop, MUIM_Notify, MUIA_AccountPop_Account, MUIV_EveryTime, (ULONG)from_accountpop, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_set_def_signature, (ULONG)data);
+				DoMethod(signatures_cycle, MUIM_Notify, MUIA_SignatureCycle_Active, MUIV_EveryTime, (IPTR)signatures_cycle, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_set_signature, (IPTR)data);
+				DoMethod(signatures_cycle, MUIM_Notify, MUIA_SignatureCycle_SignatureName, MUIV_EveryTime, (IPTR)signatures_cycle, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_set_signature, (IPTR)data);
+				DoMethod(from_accountpop, MUIM_Notify, MUIA_AccountPop_Account, MUIV_EveryTime, (IPTR)from_accountpop, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_set_def_signature, (IPTR)data);
 				if (args->action == COMPOSE_ACTION_EDIT)
 				{
 					compose_set_old_signature(&data);

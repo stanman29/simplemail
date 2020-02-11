@@ -3283,7 +3283,7 @@ static ULONG MailTreelist_GetFirstSelected(struct IClass *cl, Object *obj, struc
 	if (handle != -1)
 	{
 		*handle_ptr = handle;
-		return (ULONG)data->entries[handle]->mail_info;
+		return (IPTR)data->entries[handle]->mail_info;
 	}
 
 	return 0;
@@ -3318,7 +3318,7 @@ static ULONG MailTreelist_GetNextSelected(struct IClass *cl, Object *obj, struct
 	}
 
 	*handle_ptr = handle;
-	return (ULONG)m;
+	return (IPTR)m;
 }
 
 /*************************************************************************
@@ -3982,7 +3982,7 @@ static ULONG MailTreelist_CreateDragImage(struct IClass *cl, Object *obj, struct
 		img->touchy = msg->touchy + img->height / 2;
 		img->flags = 0;
 	}
-	return (ULONG)img;
+	return (IPTR)img;
 }
 
 /**************************************************************************
@@ -4077,7 +4077,7 @@ STATIC ULONG MailTreelist_CreateShortHelp(struct IClass *cl,Object *obj,struct M
 				free(to);
 				free(from);
 
-				return (ULONG)data->bubblehelp_buf;
+				return (IPTR)data->bubblehelp_buf;
 			}
 		}
 	}
@@ -4096,7 +4096,7 @@ STATIC ULONG MailTreelist_ContextMenuBuild(struct IClass *cl, Object * obj, stru
 	}
 
 	if (msg->my >= _mtop(obj) && msg->my < _mtop(obj) + data->title_height)
-		return (ULONG)data->title_menu;
+		return (IPTR)data->title_menu;
 
 	context_menu = MenustripObject,
 		Child, MenuObjectT(_("Mail")),
@@ -4121,26 +4121,26 @@ STATIC ULONG MailTreelist_ContextMenuBuild(struct IClass *cl, Object * obj, stru
 	if (user.config.set_all_stati)
 	{
 		hidden_menu = MenuitemObject, MUIA_Menuitem_Title, ~0, End;
-		DoMethod(stati_menu, MUIM_Family_Insert, (ULONG)hidden_menu, (ULONG)last_menu);
+		DoMethod(stati_menu, MUIM_Family_Insert, (IPTR)hidden_menu, (IPTR)last_menu);
 		last_menu = hidden_menu;
 		hidden_menu = MenuitemObject, MUIA_Menuitem_Title, _("Sent"), MUIA_UserData, MENU_SETSTATUS_SENT, End;
-		DoMethod(stati_menu, MUIM_Family_Insert, (ULONG)hidden_menu, (ULONG)last_menu);
+		DoMethod(stati_menu, MUIM_Family_Insert, (IPTR)hidden_menu, (IPTR)last_menu);
 		last_menu = hidden_menu;
 		hidden_menu = MenuitemObject, MUIA_Menuitem_Title, _("Error"), MUIA_UserData, MENU_SETSTATUS_ERROR, End;
-		DoMethod(stati_menu, MUIM_Family_Insert, (ULONG)hidden_menu, (ULONG)last_menu);
+		DoMethod(stati_menu, MUIM_Family_Insert, (IPTR)hidden_menu, (IPTR)last_menu);
 		last_menu = hidden_menu;
 		hidden_menu = MenuitemObject, MUIA_Menuitem_Title, _("Replied"), MUIA_UserData, MENU_SETSTATUS_REPLIED, End;
-		DoMethod(stati_menu, MUIM_Family_Insert, (ULONG)hidden_menu, (ULONG)last_menu);
+		DoMethod(stati_menu, MUIM_Family_Insert, (IPTR)hidden_menu, (IPTR)last_menu);
 		last_menu = hidden_menu;
 		hidden_menu = MenuitemObject, MUIA_Menuitem_Title, _("Forward"), MUIA_UserData, MENU_SETSTATUS_FORWARD, End;
-		DoMethod(stati_menu, MUIM_Family_Insert, (ULONG)hidden_menu, (ULONG)last_menu);
+		DoMethod(stati_menu, MUIM_Family_Insert, (IPTR)hidden_menu, (IPTR)last_menu);
 		last_menu = hidden_menu;
 		hidden_menu = MenuitemObject, MUIA_Menuitem_Title, _("Repl. & Forw."), MUIA_UserData, MENU_SETSTATUS_REPLFORW, End;
-		DoMethod(stati_menu, MUIM_Family_Insert, (ULONG)hidden_menu, (ULONG)last_menu);
+		DoMethod(stati_menu, MUIM_Family_Insert, (IPTR)hidden_menu, (IPTR)last_menu);
 	}
 
   data->context_menu = context_menu;
-  return (ULONG) context_menu;
+  return (IPTR) context_menu;
 }
 
 STATIC ULONG MailTreelist_ContextMenuChoice(struct IClass *cl, Object *obj, struct MUIP_ContextMenuChoice *msg)

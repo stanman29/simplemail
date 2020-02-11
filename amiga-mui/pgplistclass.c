@@ -141,7 +141,7 @@ STATIC ULONG PGPList_Refresh(struct IClass *cl,Object *obj, Msg msg)
 	key = pgp_first();
 	while (key)
 	{
-		DoMethod(obj, MUIM_NList_InsertSingle, (ULONG)key, MUIV_NList_Insert_Bottom);
+		DoMethod(obj, MUIM_NList_InsertSingle, (IPTR)key, MUIV_NList_Insert_Bottom);
 		key = pgp_next(key);
 	}
 

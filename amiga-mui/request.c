@@ -152,10 +152,10 @@ char *sm_request_string(const char *title, const char *text, const char *content
 	if (wnd)
 	{
 		ULONG cancel=0;
-		DoMethod(App, OM_ADDMEMBER, (ULONG)wnd);
-		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 3, MUIM_WriteLong, 1, (ULONG)&cancel);
-		DoMethod(string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)wnd);
+		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 3, MUIM_WriteLong, 1, (IPTR)&cancel);
+		DoMethod(string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
 
 		set(wnd,MUIA_Window_Open,TRUE);
 		set(wnd,MUIA_Window_ActiveObject,string);
@@ -165,7 +165,7 @@ char *sm_request_string(const char *title, const char *text, const char *content
 		{
 			ret = mystrdup((char*)xget(string,MUIA_String_Contents));
 		}
-		DoMethod(App, OM_REMMEMBER, (ULONG)wnd);
+		DoMethod(App, OM_REMMEMBER, (IPTR)wnd);
 		MUI_DisposeObject(wnd);
 	}
 	return ret;
@@ -217,13 +217,13 @@ int sm_request_login(const char *text, char *login, char *password, int len)
 	if (wnd)
 	{
 		ULONG cancel=0;
-		DoMethod(App, OM_ADDMEMBER, (ULONG)wnd);
-		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 3, MUIM_WriteLong, 1, (ULONG)&cancel);
-		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 3, MUIM_WriteLong, 1, (ULONG)&cancel);
-		DoMethod(pass_string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(ok_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)wnd);
+		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 3, MUIM_WriteLong, 1, (IPTR)&cancel);
+		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 3, MUIM_WriteLong, 1, (IPTR)&cancel);
+		DoMethod(pass_string, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(ok_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
 
 		set(wnd,MUIA_Window_Open,TRUE);
 		set(wnd,MUIA_Window_ActiveObject,(*login)?pass_string:login_string);
@@ -271,15 +271,15 @@ char *sm_request_pgp_id(const char *text)
 	if (wnd)
 	{
 		ULONG cancel=0;
-		DoMethod(App, OM_ADDMEMBER, (ULONG)wnd);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)wnd);
 		DoMethod(pgp_list, MUIM_PGPList_Refresh);
 
-		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 3, MUIM_WriteLong, 1, (ULONG)&cancel);
-		DoMethod(pgp_list, MUIM_Notify, MUIA_NList_DoubleClick, TRUE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(ok_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 3, MUIM_WriteLong, 1, (ULONG)&cancel);
+		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 3, MUIM_WriteLong, 1, (IPTR)&cancel);
+		DoMethod(pgp_list, MUIM_Notify, MUIA_NList_DoubleClick, TRUE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(ok_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 3, MUIM_WriteLong, 1, (IPTR)&cancel);
 
 		set(wnd,MUIA_Window_Open,TRUE);
 		loop();
@@ -287,14 +287,14 @@ char *sm_request_pgp_id(const char *text)
 		if (!cancel)
 		{
 			struct pgp_key *key;
-			DoMethod(pgp_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&key);
+			DoMethod(pgp_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&key);
 			if (key)
 			{
 				ret = (char *)malloc(16);
 				sprintf(ret,"0x%08X",key->keyid);
 			}
 		}
-		DoMethod(App, OM_REMMEMBER, (ULONG)wnd);
+		DoMethod(App, OM_REMMEMBER, (IPTR)wnd);
 		MUI_DisposeObject(wnd);
 	}
 	return ret;
@@ -331,15 +331,15 @@ struct folder *sm_request_folder(const char *text, struct folder *exclude)
 	if (wnd)
 	{
 		ULONG cancel=0;
-		DoMethod(App, OM_ADDMEMBER, (ULONG)wnd);
-		DoMethod(folder_tree, MUIM_FolderTreelist_Refresh, (ULONG)exclude);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)wnd);
+		DoMethod(folder_tree, MUIM_FolderTreelist_Refresh, (IPTR)exclude);
 
-		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)App, 3, MUIM_WriteLong, 1, (ULONG)&cancel);
-		DoMethod(folder_tree, MUIM_Notify, MUIA_NListtree_DoubleClick, MUIV_EveryTime, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(ok_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
-		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 3, MUIM_WriteLong, 1, (ULONG)&cancel);
+		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)App, 3, MUIM_WriteLong, 1, (IPTR)&cancel);
+		DoMethod(folder_tree, MUIM_Notify, MUIA_NListtree_DoubleClick, MUIV_EveryTime, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(ok_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 2, MUIM_Application_ReturnID, MUIV_Application_ReturnID_Quit);
+		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 3, MUIM_WriteLong, 1, (IPTR)&cancel);
 
 		set(wnd,MUIA_Window_Open,TRUE);
 		set(wnd,MUIA_Window_ActiveObject,folder_tree);
@@ -358,7 +358,7 @@ struct folder *sm_request_folder(const char *text, struct folder *exclude)
 				}
 			}
 		}
-		DoMethod(App, OM_REMMEMBER, (ULONG)wnd);
+		DoMethod(App, OM_REMMEMBER, (IPTR)wnd);
 		MUI_DisposeObject(wnd);
 	}
 	return selected_folder;

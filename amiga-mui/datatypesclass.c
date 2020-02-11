@@ -106,7 +106,7 @@ STATIC ULONG DataTypes_New(struct IClass *cl,Object *obj,struct opSet *msg)
 	data->ehnode.ehn_Class    = NULL;
 	data->ehnode.ehn_Events   = IDCMP_IDCMPUPDATE;
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 STATIC VOID DataTypes_Dispose(struct IClass *cl, Object *obj, Msg msg)
@@ -135,7 +135,7 @@ STATIC ULONG DataTypes_Set(struct IClass *cl,Object *obj,struct opSet *msg)
 
 	while ((tag = NextTagItem (&tstate)))
 	{
-		ULONG tidata = tag->ti_Data;
+		IPTR tidata = tag->ti_Data;
 
 		switch (tag->ti_Tag)
 		{
@@ -154,12 +154,12 @@ STATIC ULONG DataTypes_Set(struct IClass *cl,Object *obj,struct opSet *msg)
 
 			case  MUIA_DataTypes_HorizScrollbar:
 					  data->horiz_scrollbar = (Object*)tidata;
-					  DoMethod(data->horiz_scrollbar, MUIM_Notify, MUIA_Prop_First, MUIV_EveryTime, (ULONG)obj, 1, MUIM_Datatypes_HorizUpdate);
+					  DoMethod(data->horiz_scrollbar, MUIM_Notify, MUIA_Prop_First, MUIV_EveryTime, (IPTR)obj, 1, MUIM_Datatypes_HorizUpdate);
 					  break;
 
 			case  MUIA_DataTypes_VertScrollbar:
 					  data->vert_scrollbar = (Object*)tidata;
-					  DoMethod(data->vert_scrollbar, MUIM_Notify, MUIA_Prop_First, MUIV_EveryTime, (ULONG)obj, 1, MUIM_Datatypes_VertUpdate);
+					  DoMethod(data->vert_scrollbar, MUIM_Notify, MUIA_Prop_First, MUIV_EveryTime, (IPTR)obj, 1, MUIM_Datatypes_VertUpdate);
 					  break;
 		}
 	}
@@ -270,14 +270,14 @@ STATIC ULONG DataTypes_AskMinMax(struct IClass *cl,Object *obj, struct MUIP_AskM
 STATIC ULONG DataTypes_Setup(struct IClass *cl, Object *obj, struct MUIP_Setup *msg)
 {
 	struct DataTypes_Data *data = (struct DataTypes_Data*)INST_DATA(cl,obj);
-	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->ehnode);
 	return DoSuperMethodA(cl,obj,(Msg)msg);
 }
 
 STATIC ULONG DataTypes_Cleanup(struct IClass *cl, Object *obj, Msg msg)
 {
 	struct DataTypes_Data *data = (struct DataTypes_Data*)INST_DATA(cl,obj);
-	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->ehnode);
 	DoSuperMethodA(cl,obj,msg);
 	return 0;
 }
@@ -427,7 +427,7 @@ STATIC ULONG DataTypes_Print(struct IClass *cl, Object *obj, Msg msg)
 				struct TagItem tags[2];
 
 				tags[0].ti_Tag   = data->show?DTA_RastPort:TAG_IGNORE;
-				tags[0].ti_Data  = (ULONG)(data->show?_rp(obj):NULL);
+				tags[0].ti_Data  = (IPTR)(data->show?_rp(obj):NULL);
 				tags[1].ti_Tag   = TAG_DONE;
 
 				if (PrintDTObject(data->dt_obj, data->show?_window(obj):FALSE, NULL, DTM_PRINT, NULL, data->pio, tags))

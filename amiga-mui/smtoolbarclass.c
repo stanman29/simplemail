@@ -179,7 +179,7 @@ STATIC ULONG SMToolbar_New(struct IClass *cl,Object *obj,struct opSet *msg)
 					     	MUIA_Group_Spacing, 0,
 					     	End))
 					{
-						DoMethod(horiz_group, OM_ADDMEMBER, (ULONG)current_group);
+						DoMethod(horiz_group, OM_ADDMEMBER, (IPTR)current_group);
 					} else
 					{
 						MUI_DisposeObject(toolbar);
@@ -209,7 +209,7 @@ STATIC ULONG SMToolbar_New(struct IClass *cl,Object *obj,struct opSet *msg)
 						if (buttons[i].flags & MUIV_SMToolbar_ButtonFlag_Hide)
 							set(toolbar_buttons[i].obj, MUIA_ShowMe, FALSE);
 
-						DoMethod(current_group, OM_ADDMEMBER, (ULONG)toolbar_buttons[i].obj);
+						DoMethod(current_group, OM_ADDMEMBER, (IPTR)toolbar_buttons[i].obj);
 					} else
 					{
 						MUI_DisposeObject(toolbar);
@@ -227,7 +227,7 @@ STATIC ULONG SMToolbar_New(struct IClass *cl,Object *obj,struct opSet *msg)
 			{
 				set(current_group, MUIA_Weight, 50 * j);
 				if (add_hvspace)
-					DoMethod(horiz_group, OM_ADDMEMBER, (ULONG)HVSpace);
+					DoMethod(horiz_group, OM_ADDMEMBER, (IPTR)HVSpace);
 			}
 		}
 	}
@@ -260,9 +260,9 @@ STATIC ULONG SMToolbar_New(struct IClass *cl,Object *obj,struct opSet *msg)
 		data->toolbar = toolbar;
 	}
 
-	DoMethod(obj, OM_ADDMEMBER, (ULONG)toolbar);
+	DoMethod(obj, OM_ADDMEMBER, (IPTR)toolbar);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 STATIC ULONG SMToolbar_Dispose(struct IClass *cl, Object *obj, Msg msg)
@@ -352,7 +352,7 @@ STATIC ULONG SMToolbar_GetAttr(struct IClass *cl, Object *obj, struct MUIP_SMToo
 		case	MUIA_SMToolbar_Attr_Hide:
 		    	if (data->used_thebar_mcc)
 		    	{
-		    		DoMethod(data->toolbar, MUIM_TheBar_GetAttr, msg->id, MUIA_TheBar_Attr_Hide, (ULONG)msg->storage);
+		    		DoMethod(data->toolbar, MUIM_TheBar_GetAttr, msg->id, MUIA_TheBar_Attr_Hide, (IPTR)msg->storage);
 		    	} else
 		    	{
 		    		for (i=0;i<data->button_count;i++)
@@ -369,7 +369,7 @@ STATIC ULONG SMToolbar_GetAttr(struct IClass *cl, Object *obj, struct MUIP_SMToo
 		case	MUIA_SMToolbar_Attr_Disabled:
 		    	if (data->used_thebar_mcc)
 		    	{
-		    		DoMethod(data->toolbar, MUIM_TheBar_GetAttr, msg->id, MUIA_TheBar_Attr_Disabled, (ULONG)msg->storage);
+		    		DoMethod(data->toolbar, MUIM_TheBar_GetAttr, msg->id, MUIA_TheBar_Attr_Disabled, (IPTR)msg->storage);
 		    	} else
 		    	{
 		    		for (i=0;i<data->button_count;i++)
@@ -386,7 +386,7 @@ STATIC ULONG SMToolbar_GetAttr(struct IClass *cl, Object *obj, struct MUIP_SMToo
 		case	MUIA_SMToolbar_Attr_Selected:
 		    	if (data->used_thebar_mcc)
 		    	{
-		    		DoMethod(data->toolbar, MUIM_TheBar_GetAttr, msg->id, MUIA_TheBar_Attr_Selected, (ULONG)msg->storage);
+		    		DoMethod(data->toolbar, MUIM_TheBar_GetAttr, msg->id, MUIA_TheBar_Attr_Selected, (IPTR)msg->storage);
 		    	} else
 		    	{
 		    		for (i=0;i<data->button_count;i++)
@@ -414,7 +414,7 @@ STATIC ULONG SMToolbar_GetObject(struct IClass *cl, Object *obj, struct MUIP_SMT
 	for (i=0;i<data->button_count;i++)
 	{
 		if (data->toolbar_buttons[i].ID == msg->id)
-			return (ULONG)data->toolbar_buttons[i].obj;
+			return (IPTR)data->toolbar_buttons[i].obj;
 	}
 
 	return 0;

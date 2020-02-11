@@ -143,7 +143,7 @@ STATIC ULONG AddressGroupList_New(struct IClass *cl,Object *obj,struct opSet *ms
 						MUIA_NList_Format, ",",
 						TAG_DONE);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -209,16 +209,16 @@ STATIC ULONG AddressGroupList_DragDrop(struct IClass *cl,Object *obj,struct MUIP
 	
 	if (!(address_list = msg->obj)) return 0;
 
-	DoMethod(obj, MUIM_NList_GetEntry, xget(obj, MUIA_NList_DropMark), (ULONG)&group);
+	DoMethod(obj, MUIM_NList_GetEntry, xget(obj, MUIA_NList_DropMark), (IPTR)&group);
 	if (!group) return 0;
 
 	pos = MUIV_NList_NextSelected_Start;
 	while (1)
 	{
-		DoMethod(address_list, MUIM_NList_NextSelected, (ULONG)&pos);
+		DoMethod(address_list, MUIM_NList_NextSelected, (IPTR)&pos);
 		if (pos == MUIV_NList_NextSelected_End) break;
 
-		DoMethod(address_list, MUIM_NList_GetEntry, pos, (ULONG)&entry);
+		DoMethod(address_list, MUIM_NList_GetEntry, pos, (IPTR)&entry);
 		if (entry && !array_contains(entry->group_array,group->name))
 		{
 			char **newarray = array_add_string(entry->group_array,group->name);
@@ -260,7 +260,7 @@ STATIC ULONG AddressGroupList_Refresh(struct IClass *cl, Object *obj, Msg msg)
 	grp = addressbook_first_group();
 	while (grp)
 	{
-		DoMethod(obj, MUIM_NList_InsertSingle, (ULONG)grp, MUIV_NList_Insert_Bottom);
+		DoMethod(obj, MUIM_NList_InsertSingle, (IPTR)grp, MUIV_NList_Insert_Bottom);
 		grp = addressbook_next_group(grp);
 	}
 

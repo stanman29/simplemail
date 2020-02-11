@@ -224,7 +224,7 @@ STATIC ULONG Popupmenu_New(struct IClass *cl,Object *obj,struct opSet *msg)
 
 	list_init(&data->popup_list);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -260,7 +260,7 @@ STATIC ULONG Popupmenu_Get(struct IClass *cl, Object *obj, struct opGet *msg)
 	} else if (msg->opg_AttrID == MUIA_Popupmenu_SelectedData)
 	{
 		struct popup_node *node = (struct popup_node*)list_find(&data->popup_list,data->selected);
-		if (node) *msg->opg_Storage = (ULONG)node->udata;
+		if (node) *msg->opg_Storage = (IPTR)node->udata;
 		else *msg->opg_Storage = 0;
 		return 1;
 	}
@@ -307,7 +307,7 @@ STATIC ULONG Popupmenu_Show(struct IClass *cl, Object *obj, struct MUIP_Show *ms
 	struct Popupmenu_Data *data = (struct Popupmenu_Data*)INST_DATA(cl,obj);
 	if (!DoSuperMethodA(cl,obj,(Msg)msg)) return 0;
 	data->show = 1;
-	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->mb_handler);
+	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->mb_handler);
 	return 1;
 }
 
@@ -323,7 +323,7 @@ STATIC ULONG Popupmenu_Hide(struct IClass *cl, Object *obj, Msg msg)
 {
 	struct Popupmenu_Data *data = (struct Popupmenu_Data*)INST_DATA(cl,obj);
 	data->show = 0;
-	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->mb_handler);
+	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->mb_handler);
 	return DoSuperMethodA(cl,obj,(Msg)msg);
 }
 
@@ -354,7 +354,7 @@ STATIC ULONG Popupmenu_HandleEvent(struct IClass *cl, Object *obj, struct MUIP_H
 				set(obj, MUIA_Selected, TRUE);
 				if (data->show)
 				{
-					DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->mv_handler);
+					DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->mv_handler);
 					Popupmenu_OpenWindow(cl,obj);
 				}
 				return MUI_EventHandlerRC_Eat;
@@ -365,7 +365,7 @@ STATIC ULONG Popupmenu_HandleEvent(struct IClass *cl, Object *obj, struct MUIP_H
 				set(obj, MUIA_Selected, FALSE);
 				if (data->show)
 				{
-					DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->mv_handler);
+					DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->mv_handler);
 					Popupmenu_CloseWindow(cl,obj);
 				}
 
@@ -381,7 +381,7 @@ STATIC ULONG Popupmenu_HandleEvent(struct IClass *cl, Object *obj, struct MUIP_H
 			set(obj, MUIA_Selected, FALSE);
 			if (data->show)
 			{
-				DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->mv_handler);
+				DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->mv_handler);
 				Popupmenu_CloseWindow(cl,obj);
 			}
 			return MUI_EventHandlerRC_Eat;

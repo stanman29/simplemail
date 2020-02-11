@@ -59,7 +59,7 @@ STATIC ULONG FilterList_New(struct IClass *cl,Object *obj,struct opSet *msg)
 
 /*	data = (struct FolderTreelist_Data*)INST_DATA(cl,obj);*/
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**

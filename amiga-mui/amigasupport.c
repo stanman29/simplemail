@@ -428,7 +428,7 @@ LONG GetControlChar(const char *label)
 /* Free all resources allocated in ParseTemplate */
 VOID FreeTemplate(APTR m)
 {
-	ULONG *mem = (ULONG*)m;
+	IPTR *mem = (IPTR*)m;
 	if(mem)
 	{
 		if(mem[2]) FreeArgs((struct RDArgs*)mem[2]);
@@ -446,12 +446,12 @@ APTR ParseTemplate(CONST_STRPTR temp, STRPTR line, APTR results)
 	if(mem)
 	{
 		struct RDArgs *rdargs = (struct RDArgs*)AllocDosObject(DOS_RDARGS,NULL);
-		if((mem[0] = (ULONG)rdargs))
+		if((mem[0] = (IPTR)rdargs))
 		{
 			LONG len = mystrlen(line)+2;
 			STRPTR buf = (STRPTR)AllocVec(len,0);
 
-			if((mem[1] = (ULONG)buf))
+			if((mem[1] = (IPTR)buf))
 			{
 				struct RDArgs *rd;
 
@@ -465,7 +465,7 @@ APTR ParseTemplate(CONST_STRPTR temp, STRPTR line, APTR results)
 				rdargs->RDA_Source.CS_CurChr = 0;
 
 				rd = ReadArgs(temp,(LONG*)results, rdargs );
-				if((mem[2] = (ULONG)rd))
+				if((mem[2] = (IPTR)rd))
 				{
 					return mem;
 				}

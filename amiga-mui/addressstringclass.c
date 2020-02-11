@@ -141,8 +141,8 @@ STATIC ULONG MatchWindow_New(struct IClass *cl,Object *obj,struct opSet *msg)
 	data->str = str;
 	data->list = list;
 
-	DoMethod(data->list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)MatchWindow_NewActive, (ULONG)data);
-	return (ULONG)obj;
+	DoMethod(data->list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)MatchWindow_NewActive, (IPTR)data);
+	return (IPTR)obj;
 }
 
 /**
@@ -180,10 +180,10 @@ STATIC ULONG MatchWindow_Get(struct IClass *cl, Object *obj, struct opGet *msg)
 	if (msg->opg_AttrID == MUIA_MatchWindow_ActiveString)
 	{
 		struct address_match_entry *entry;
-		DoMethod(data->list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&entry);
+		DoMethod(data->list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&entry);
 		if (entry && entry->type == AMET_COMPLETION)
 		{
-			*msg->opg_Storage = (ULONG)entry->o.completion->complete;
+			*msg->opg_Storage = (IPTR)entry->o.completion->complete;
 		} else
 		{
 			*msg->opg_Storage = 0;
@@ -210,7 +210,7 @@ STATIC ULONG MatchWindow_Refresh(struct IClass *cl, Object *obj, struct MUIP_Mat
 	DoMethod(obj, MUIM_Window_ToFront);
 	if (data->current_pattern) free(data->current_pattern);
 	data->current_pattern = utf8strdup(msg->pattern, 1);
-	return DoMethod(data->list, MUIM_AddressMatchList_Refresh, (ULONG)data->current_pattern);
+	return DoMethod(data->list, MUIM_AddressMatchList_Refresh, (IPTR)data->current_pattern);
 }
 
 /**
@@ -304,7 +304,7 @@ STATIC ULONG AddressString_New(struct IClass *cl,Object *obj,struct opSet *msg)
 	if (!(obj=(Object *)DoSuperMethodA(cl,obj,(Msg)msg)))
 		return 0;
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -351,9 +351,9 @@ STATIC ULONG AddressString_Cleanup(struct IClass *cl, Object *obj, struct MUIP_C
 STATIC ULONG AddressString_GoActive(struct IClass *cl, Object *obj,Msg msg)
 {
 	struct AddressString_Data *data = (struct AddressString_Data*)INST_DATA(cl,obj);
-	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->ehnode);
 	AddressString_OpenList(cl,obj);
-	DoMethod(obj, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (ULONG)obj, 1, MUIM_AddressString_UpdateList);
+	DoMethod(obj, MUIM_Notify, MUIA_String_Contents, MUIV_EveryTime, (IPTR)obj, 1, MUIM_AddressString_UpdateList);
 	return DoSuperMethodA(cl, obj, msg);
 }
 
@@ -370,7 +370,7 @@ STATIC ULONG AddressString_GoInactive(struct IClass *cl, Object *obj,Msg msg)
 	struct AddressString_Data *data = (struct AddressString_Data*)INST_DATA(cl,obj);
 	DoMethod(obj, MUIM_KillNotify, MUIA_String_Contents);
 	AddressString_CloseList(cl,obj);
-	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->ehnode);
 	set(obj, MUIA_BetterString_SelectSize, 0);
 	return DoSuperMethodA(cl, obj, msg);
 }
@@ -487,7 +487,7 @@ STATIC ULONG AddressString_HandleEvent(struct IClass *cl, Object *obj, struct MU
 
 						if ((completed = addressbook_complete_address(addr_start)))
 						{
-							DoMethod(obj, MUIM_AddressString_Complete, (ULONG)completed);
+							DoMethod(obj, MUIM_AddressString_Complete, (IPTR)completed);
 						}
 						free(addr_start);
 					}
@@ -538,7 +538,7 @@ STATIC ULONG AddressString_DragDrop(struct IClass *cl, Object *obj, struct MUIP_
 {
 	struct addressbook_entry_new *entry;
 
-	DoMethod(msg->obj, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&entry);
+	DoMethod(msg->obj, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&entry);
 
 	if (entry)
 	{
@@ -645,7 +645,7 @@ STATIC VOID AddressString_CloseList(struct IClass *cl, Object *obj)
 	if (data->match_wnd)
 	{
 		set(data->match_wnd, MUIA_Window_Open, FALSE);
-		DoMethod(_app(obj),OM_REMMEMBER, (ULONG)data->match_wnd);
+		DoMethod(_app(obj),OM_REMMEMBER, (IPTR)data->match_wnd);
 		MUI_DisposeObject(data->match_wnd);
 		data->match_wnd = NULL;
 	}
@@ -673,7 +673,7 @@ STATIC VOID AddressString_OpenList(struct IClass *cl, Object *obj)
 				MUIA_Window_Width, _width(obj),
 				TAG_DONE)))
 	{
-		DoMethod(_app(obj),OM_ADDMEMBER, (ULONG)data->match_wnd);
+		DoMethod(_app(obj),OM_ADDMEMBER, (IPTR)data->match_wnd);
 		AddressString_UpdateList(cl,obj);
 	}
 }
@@ -698,7 +698,7 @@ STATIC ULONG AddressString_UpdateList(struct IClass *cl, Object *obj)
 	if (data->match_wnd)
 	{
 		int entries;
-		DoMethod(data->match_wnd, MUIM_MatchWindow_Refresh, (ULONG)addr_start);
+		DoMethod(data->match_wnd, MUIM_MatchWindow_Refresh, (IPTR)addr_start);
 		entries = xget(data->match_wnd, MUIA_MatchWindow_Entries);
 
 		if (entries > 1)

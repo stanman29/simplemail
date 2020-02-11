@@ -157,7 +157,7 @@ STATIC ASM SAVEDS VOID matchentry_display(REG(a0,struct Hook *h),REG(a2,Object *
 	{
 		int l;
 
-		sprintf(data->realname_buf,"\33O[%08lx]",(ULONG)data->status_group);
+		sprintf(data->realname_buf,"\33O[%08lx]",(IPTR)data->status_group);
 		l = strlen(data->realname_buf);
 		
 		utf8tostr(entry->o.group->name, data->realname_buf + l, sizeof(data->realname_buf) - l, user.config.default_codeset);	
@@ -324,7 +324,7 @@ STATIC ULONG AddressMatchList_New(struct IClass *cl,Object *obj,struct opSet *ms
 
 	data->status_group_obj = PictureButtonObject, MUIA_PictureButton_Directory, gui_get_images_directory(), MUIA_PictureButton_Filename, "status_group", End;
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -358,7 +358,7 @@ STATIC ULONG AddressMatchList_Setup(struct IClass *cl, Object *obj, struct MUIP_
 	if (!DoSuperMethodA(cl,obj,(Msg)msg))
 		return 0;
 
-	data->status_group = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (ULONG)data->status_group_obj, 0);
+	data->status_group = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (IPTR)data->status_group_obj, 0);
 	return 1;
 }
 
@@ -373,7 +373,7 @@ STATIC ULONG AddressMatchList_Setup(struct IClass *cl, Object *obj, struct MUIP_
 STATIC ULONG AddressMatchList_Cleanup(struct IClass *cl, Object *obj, Msg msg)
 {
 	struct AddressMatchList_Data *data = (struct AddressMatchList_Data*)INST_DATA(cl,obj);
-	if (data->status_group) DoMethod(obj, MUIM_NList_DeleteImage, (ULONG)data->status_group);
+	if (data->status_group) DoMethod(obj, MUIM_NList_DeleteImage, (IPTR)data->status_group);
 	return DoSuperMethodA(cl,obj,msg);
 }
 
@@ -408,7 +408,7 @@ STATIC ULONG AddressMatchList_Refresh(struct IClass *cl, Object *obj, struct MUI
 		{
 			entry.type = AMET_ENTRY;
 			entry.o.entry = addr_entry;
-			DoMethod(obj, MUIM_NList_InsertSingle, (ULONG)&entry, MUIV_NList_Insert_Sorted);
+			DoMethod(obj, MUIM_NList_InsertSingle, (IPTR)&entry, MUIV_NList_Insert_Sorted);
 		}
 		addr_entry = addressbook_next_entry(addr_entry);
 	}
@@ -421,7 +421,7 @@ STATIC ULONG AddressMatchList_Refresh(struct IClass *cl, Object *obj, struct MUI
 		{
 			entry.type = AMET_GROUP;
 			entry.o.group = group;
-			DoMethod(obj, MUIM_NList_InsertSingle, (ULONG)&entry, MUIV_NList_Insert_Sorted);
+			DoMethod(obj, MUIM_NList_InsertSingle, (IPTR)&entry, MUIV_NList_Insert_Sorted);
 		}
 
 		group = addressbook_next_group(group);
@@ -440,7 +440,7 @@ STATIC ULONG AddressMatchList_Refresh(struct IClass *cl, Object *obj, struct MUI
 				entry.type = AMET_COMPLETION;
 				entry.o.completion = cn;
 
-				DoMethod(obj, MUIM_NList_InsertSingle, (ULONG)&entry, MUIV_NList_Insert_Sorted);
+				DoMethod(obj, MUIM_NList_InsertSingle, (IPTR)&entry, MUIV_NList_Insert_Sorted);
 
 				cn = addressbook_completion_node_next(cn);
 			}

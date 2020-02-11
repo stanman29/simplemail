@@ -111,9 +111,9 @@ STATIC ULONG AudioSelectGroup_New(struct IClass *cl,Object *obj,struct opSet *ms
 	data->file_string = file_string;
 	data->play_button = play_button;
 
-	DoMethod(play_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)AudioSelectGroup_Play, (ULONG)data);
+	DoMethod(play_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)AudioSelectGroup_Play, (IPTR)data);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**

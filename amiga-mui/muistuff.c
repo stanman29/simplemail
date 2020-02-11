@@ -201,7 +201,7 @@ VOID DisposeAllChilds(Object *o)
 
 	while ((child = (Object*)NextObject(&cstate)))
 	{
-		DoMethod(o,OM_REMMEMBER, (ULONG)child);
+		DoMethod(o,OM_REMMEMBER, (IPTR)child);
 		MUI_DisposeObject(child);
 	}
 }
@@ -216,7 +216,7 @@ VOID DisposeAllFamilyChilds(Object *o)
 
 	while ((child = (Object*)NextObject(&cstate)))
 	{
-		DoMethod(o,OM_REMMEMBER, (ULONG)child);
+		DoMethod(o,OM_REMMEMBER, (IPTR)child);
 		MUI_DisposeObject(child);
 	}
 }

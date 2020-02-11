@@ -91,14 +91,14 @@ STATIC ULONG SingleString_Setup(struct IClass *cl, Object *obj,struct MUIP_Setup
 STATIC ULONG SingleString_GoActive(struct IClass *cl, Object *obj,Msg msg)
 {
 	struct SingleString_Data *data = (struct SingleString_Data*)INST_DATA(cl,obj);
-	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_AddEventHandler, (IPTR)&data->ehnode);
 	return DoSuperMethodA(cl, obj, msg);
 }
 
 STATIC ULONG SingleString_GoInactive(struct IClass *cl, Object *obj,Msg msg)
 {
 	struct SingleString_Data *data = (struct SingleString_Data*)INST_DATA(cl,obj);
-	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (ULONG)&data->ehnode);
+	DoMethod(_win(obj), MUIM_Window_RemEventHandler, (IPTR)&data->ehnode);
 	set(obj, MUIA_BetterString_SelectSize, 0);
 	return DoSuperMethodA(cl, obj, msg);
 }
@@ -205,13 +205,13 @@ STATIC VOID MultiString_Event(void **msg)
 		char *contents = (char*)xget(obj_node->obj, MUIA_UTF8String_Contents);
 		int new_cursor_pos = strlen((char*)xget(prev_node->obj, MUIA_String_Contents)); /* is Okay */
 
-		DoMethod(prev_node->obj, MUIM_UTF8String_Insert, (ULONG)contents, MUIV_BetterString_Insert_EndOfString);
+		DoMethod(prev_node->obj, MUIM_UTF8String_Insert, (IPTR)contents, MUIV_BetterString_Insert_EndOfString);
 		set(prev_node-> obj,MUIA_String_BufferPos, new_cursor_pos);
 		set(window, MUIA_Window_ActiveObject, prev_node->obj);
 
 		node_remove(&obj_node->node);
 		DoMethod(obj, MUIM_Group_InitChange);
-		DoMethod(obj, OM_REMMEMBER, (ULONG)obj_node->obj);
+		DoMethod(obj, OM_REMMEMBER, (IPTR)obj_node->obj);
 		MUI_DisposeObject(obj_node->obj);
 		free(obj_node);
 		DoMethod(obj, MUIM_Group_ExitChange);
@@ -231,7 +231,7 @@ STATIC ULONG MultiString_New(struct IClass *cl,Object *obj,struct opSet *msg)
 	data = (struct MultiString_Data*)INST_DATA(cl,obj);
 	list_init(&data->object_list);
 	MultiString_Set(cl,obj,msg,1);
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 STATIC ULONG MultiString_Dispose(struct IClass *cl, Object *obj, Msg msg)
@@ -270,7 +270,7 @@ STATIC ULONG MultiString_Set(struct IClass *cl,Object *group, struct opSet *msg,
 					group_changed = 1;
 					DoMethod(group, MUIM_Group_InitChange);
 				}
-				DoMethod(group,OM_REMMEMBER, (ULONG)obj->obj);
+				DoMethod(group,OM_REMMEMBER, (IPTR)obj->obj);
 				MUI_DisposeObject(obj->obj);
 				node_remove(&obj->node);
 			}
@@ -321,7 +321,7 @@ STATIC ULONG MultiString_Get(struct IClass *cl,Object *obj, struct opGet *msg)
 				obj_node = (struct object_node*)node_next(&obj_node->node);
 			}
 			data->contents_array[i] = NULL;
-			*msg->opg_Storage = (ULONG)data->contents_array;
+			*msg->opg_Storage = (IPTR)data->contents_array;
 		}
 	}
 	return DoSuperMethodA(cl,obj,(Msg)msg);
@@ -345,7 +345,7 @@ STATIC Object *MultiString_AddStringField(struct IClass *cl,Object *obj, struct 
 			Object **sort_array = (Object**)malloc(sizeof(Object*)*(list_length(&data->object_list)+3));
 			list_insert(&data->object_list, &obj_node->node, &prev_node->node);
 			DoMethod(obj, MUIM_Group_InitChange);
-			DoMethod(obj, OM_ADDMEMBER, (ULONG)obj_node->obj);
+			DoMethod(obj, OM_ADDMEMBER, (IPTR)obj_node->obj);
 
 			if (sort_array)
 			{
@@ -367,8 +367,8 @@ STATIC Object *MultiString_AddStringField(struct IClass *cl,Object *obj, struct 
 			}
 
 			DoMethod(obj,MUIM_Group_ExitChange);
-			DoMethod(obj_node->obj, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (ULONG)obj, 6, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)MultiString_Acknowledge, (ULONG)cl, (ULONG)obj, (ULONG)obj_node);
-			DoMethod(obj_node->obj, MUIM_Notify, MUIA_SingleString_Event, MUIV_EveryTime, (ULONG)App, 10, MUIM_Application_PushMethod, (ULONG)App, 7, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)MultiString_Event, (ULONG)cl, (ULONG)obj, (ULONG)obj_node, MUIV_TriggerValue);
+			DoMethod(obj_node->obj, MUIM_Notify, MUIA_String_Acknowledge, MUIV_EveryTime, (IPTR)obj, 6, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)MultiString_Acknowledge, (IPTR)cl, (IPTR)obj, (IPTR)obj_node);
+			DoMethod(obj_node->obj, MUIM_Notify, MUIA_SingleString_Event, MUIV_EveryTime, (IPTR)App, 10, MUIM_Application_PushMethod, (IPTR)App, 7, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)MultiString_Event, (IPTR)cl, (IPTR)obj, (IPTR)obj_node, MUIV_TriggerValue);
 			return obj_node->obj;
 		}
 	}

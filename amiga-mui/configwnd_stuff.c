@@ -104,10 +104,10 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, Sizes_Dispatcher, cl, obj, msg)
 					{
 						static char buf[64];
 						LONG val = ((struct MUIP_Numeric_Stringify*)msg)->value;
-						if (!val) return (ULONG)_("All messages");
+						if (!val) return (IPTR)_("All messages");
 						val = value2size(val);
 						sprintf(buf, _("> %ld KB"),val);
-						return (ULONG)buf;
+						return (IPTR)buf;
 					}
 					break;
 		default: return DoSuperMethodA(cl,obj,msg);

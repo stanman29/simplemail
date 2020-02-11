@@ -160,7 +160,7 @@ static void error_select(void)
 
 	if (node)
 	{
-		DoMethod(text_list, MUIM_NList_InsertSingleWrap, (ULONG)node->text, MUIV_NList_Insert_Bottom, WRAPCOL0, ALIGN_LEFT);
+		DoMethod(text_list, MUIM_NList_InsertSingleWrap, (IPTR)node->text, MUIV_NList_Insert_Bottom, WRAPCOL0, ALIGN_LEFT);
 	}
 
 	set(text_list, MUIA_NList_Quiet, FALSE);
@@ -274,11 +274,11 @@ static void init_error(void)
 
 	if (error_wnd)
 	{
-		DoMethod(App, OM_ADDMEMBER, (ULONG)error_wnd);
-		DoMethod(error_wnd, MUIM_Notify, MUIA_Window_Open, MUIV_EveryTime, (ULONG)error_wnd, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)error_window_open_state);
-		DoMethod(error_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)error_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
-		DoMethod(clear_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)clear_button, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)error_window_clear);
-		DoMethod(all_errors_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (ULONG)all_errors_list, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)error_select);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)error_wnd);
+		DoMethod(error_wnd, MUIM_Notify, MUIA_Window_Open, MUIV_EveryTime, (IPTR)error_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)error_window_open_state);
+		DoMethod(error_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)error_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
+		DoMethod(clear_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)clear_button, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)error_window_clear);
+		DoMethod(all_errors_list, MUIM_Notify, MUIA_NList_Active, MUIV_EveryTime, (IPTR)all_errors_list, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)error_select);
 	}
 }
 
