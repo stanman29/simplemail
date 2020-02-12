@@ -159,7 +159,7 @@ Object *LoadAndMapPicture(const char *filename, struct Screen *scr)
 	if (o)
 	{
 		struct FrameInfo fri = {0};
-		DoMethod(o,DTM_FRAMEBOX,NULL,(ULONG)&fri,(ULONG)&fri,sizeof(struct FrameInfo),0);
+		DoMethod(o,DTM_FRAMEBOX,NULL,(IPTR)&fri,(IPTR)&fri,sizeof(struct FrameInfo),0);
 
 		if (fri.fri_Dimensions.Depth>0)
 		{
@@ -214,7 +214,7 @@ static int MapPicture(Object *obj, struct Screen *scr)
 
 	SetAttrs(obj, PDTA_Screen, scr, TAG_DONE);
 
-	DoMethod(obj,DTM_FRAMEBOX,NULL,(ULONG)&fri,(ULONG)&fri,sizeof(struct FrameInfo),0);
+	DoMethod(obj,DTM_FRAMEBOX,NULL,(IPTR)&fri,(IPTR)&fri,sizeof(struct FrameInfo),0);
 
 	if (fri.fri_Dimensions.Depth>0)
 	{

@@ -185,7 +185,7 @@ STATIC VOID MultiString_Event(void **msg)
 	Object *obj = (Object*)msg[1];
 	struct object_node *obj_node = (struct object_node*)msg[2];
 	Object *window = (Object*)xget(obj,MUIA_WindowObject);
-	int event = (int)msg[3];
+	int event = (IPTR)msg[3];
 
 	if (event == MUIV_SingleString_Event_CursorUp && node_prev(&obj_node->node))
 	{

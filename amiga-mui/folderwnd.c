@@ -163,7 +163,7 @@ static void imap_folders_submit_pressed(void)
 		for (i=0;i<xget(imap_folders_list,MUIA_NList_Entries);i++)
 		{
 			struct imap_folder_entry *entry;
-			DoMethod(imap_folders_list, MUIM_NList_GetEntry, i, (ULONG)&entry);
+			DoMethod(imap_folders_list, MUIM_NList_GetEntry, i, (IPTR)&entry);
 			if (entry && entry->subscribed)
 				string_list_insert_tail(&list,(char*)entry->name);
 		}
@@ -175,7 +175,7 @@ static void imap_folders_submit_pressed(void)
 static void imap_folders_subscribe_pressed(void)
 {
 	struct imap_folder_entry *entry;
-	DoMethod(imap_folders_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&entry);
+	DoMethod(imap_folders_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&entry);
 	if (entry)
 	{
 		entry->subscribed = 1;
@@ -186,7 +186,7 @@ static void imap_folders_subscribe_pressed(void)
 static void imap_folders_unsubscribe_pressed(void)
 {
 	struct imap_folder_entry *entry;
-	DoMethod(imap_folders_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&entry);
+	DoMethod(imap_folders_list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&entry);
 	if (entry)
 	{
 		entry->subscribed = 0;
@@ -290,7 +290,7 @@ void folder_refresh_signature_cycle(void)
 	if (folder_wnd)
 	{
 		DoMethod(compose_mail_properties_group, MUIM_Group_InitChange);
-		DoMethod(defsign_cycle, MUIM_SignatureCycle_Refresh, (ULONG)&user.config.signature_list);
+		DoMethod(defsign_cycle, MUIM_SignatureCycle_Refresh, (IPTR)&user.config.signature_list);
 		DoMethod(compose_mail_properties_group, MUIM_Group_ExitChange);
 	}
 }
@@ -437,16 +437,16 @@ static void init_folder(void)
 
 	if (folder_wnd)
 	{
-		DoMethod(App, OM_ADDMEMBER, (ULONG)folder_wnd);
-		DoMethod(folder_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (ULONG)folder_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
-		DoMethod(ok_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)folder_wnd, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)folder_ok);
-		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)folder_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)folder_wnd);
+		DoMethod(folder_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)folder_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
+		DoMethod(ok_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)folder_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)folder_ok);
+		DoMethod(cancel_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)folder_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
 		group_mode = 0;
 
-		DoMethod(imap_folders_check, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)folder_wnd, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)imap_folders_check_pressed);
-		DoMethod(imap_folders_submit, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)folder_wnd, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)imap_folders_submit_pressed);
-		DoMethod(imap_folders_subscribe, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)folder_wnd, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)imap_folders_subscribe_pressed);
-		DoMethod(imap_folders_unsubscribe, MUIM_Notify, MUIA_Pressed, FALSE, (ULONG)folder_wnd, 3, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)imap_folders_unsubscribe_pressed);
+		DoMethod(imap_folders_check, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)folder_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)imap_folders_check_pressed);
+		DoMethod(imap_folders_submit, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)folder_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)imap_folders_submit_pressed);
+		DoMethod(imap_folders_subscribe, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)folder_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)imap_folders_subscribe_pressed);
+		DoMethod(imap_folders_unsubscribe, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)folder_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)imap_folders_unsubscribe_pressed);
 		imap_mode = 1;
 	}
 }

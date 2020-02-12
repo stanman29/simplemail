@@ -507,17 +507,17 @@ static void compose_remove_file(struct Compose_Data **pdata)
 
   id = ((struct attachment*)treenode->tn_User)->unique_id;
 
-	rem = DoMethod(data->attach_tree, MUIM_NListtree_GetNr, (ULONG)treenode, MUIV_NListtree_GetNr_Flag_CountLevel) == 2;
+	rem = DoMethod(data->attach_tree, MUIM_NListtree_GetNr, (IPTR)treenode, MUIV_NListtree_GetNr_Flag_CountLevel) == 2;
 
-	treenode = (struct MUI_NListtree_TreeNode*)DoMethod(data->attach_tree, MUIM_NListtree_GetEntry, (ULONG)treenode, MUIV_NListtree_GetEntry_Position_Parent,0);
+	treenode = (struct MUI_NListtree_TreeNode*)DoMethod(data->attach_tree, MUIM_NListtree_GetEntry, (IPTR)treenode, MUIV_NListtree_GetEntry_Position_Parent,0);
 
 	if (treenode && rem) set(data->attach_tree, MUIA_NListtree_Quiet,TRUE);
 	DoMethod(data->attach_tree, MUIM_NListtree_Remove, MUIV_NListtree_Remove_ListNode_Active, MUIV_NListtree_Remove_TreeNode_Active, 0);
 
 	if (treenode && rem)
 	{
-		DoMethod(data->attach_tree, MUIM_NListtree_Move, (ULONG)treenode, MUIV_NListtree_Move_OldTreeNode_Head, MUIV_NListtree_Move_NewListNode_Root, MUIV_NListtree_Move_NewTreeNode_Head, 0);
-		DoMethod(data->attach_tree, MUIM_NListtree_Remove, MUIV_NListtree_Remove_ListNode_Root, (ULONG)treenode, 0);
+		DoMethod(data->attach_tree, MUIM_NListtree_Move, (IPTR)treenode, MUIV_NListtree_Move_OldTreeNode_Head, MUIV_NListtree_Move_NewListNode_Root, MUIV_NListtree_Move_NewTreeNode_Head, 0);
+		DoMethod(data->attach_tree, MUIM_NListtree_Remove, MUIV_NListtree_Remove_ListNode_Root, (IPTR)treenode, 0);
 		set(data->attach_tree, MUIA_NListtree_Active, MUIV_NListtree_Active_First);
 		set(data->attach_tree, MUIA_NListtree_Quiet,FALSE);
 	}
@@ -525,7 +525,7 @@ static void compose_remove_file(struct Compose_Data **pdata)
   treenode = (struct MUI_NListtree_TreeNode*)DoMethod(data->quick_attach_tree, MUIM_AttachmentList_FindUniqueID, id);
   if (treenode)
   {
-		DoMethod(data->quick_attach_tree, MUIM_NListtree_Remove, MUIV_NListtree_Remove_ListNode_Root, (ULONG)treenode, 0);
+		DoMethod(data->quick_attach_tree, MUIM_NListtree_Remove, MUIV_NListtree_Remove_ListNode_Root, (IPTR)treenode, 0);
   }
 
 }
@@ -605,8 +605,8 @@ static void compose_attach_active(struct Compose_Data **pdata)
 						TAG_DONE);
 				set(data->text_texteditor, MUIA_TextEditor_ImportHook, MUIV_TextEditor_ImportHook_Plain);
 
-				DoMethod(data->x_text, MUIM_SetAsString, MUIA_Text_Contents, (ULONG)"%04ld", xget(data->text_texteditor,MUIA_TextEditor_CursorX));
-				DoMethod(data->y_text, MUIM_SetAsString, MUIA_Text_Contents, (ULONG)"%04ld", xget(data->text_texteditor,MUIA_TextEditor_CursorY));
+				DoMethod(data->x_text, MUIM_SetAsString, MUIA_Text_Contents, (IPTR)"%04ld", xget(data->text_texteditor,MUIA_TextEditor_CursorX));
+				DoMethod(data->y_text, MUIM_SetAsString, MUIA_Text_Contents, (IPTR)"%04ld", xget(data->text_texteditor,MUIA_TextEditor_CursorY));
 
 				set(data->wnd, MUIA_Window_ActiveObject, data->text_texteditor);
 			}
@@ -680,7 +680,7 @@ static void compose_window_attach_mail(struct Compose_Data *data, struct MUI_NLi
 	if (treenode->tn_Flags & TNF_LIST)
 	{
 		struct MUI_NListtree_TreeNode *tn = (struct MUI_NListtree_TreeNode *)DoMethod(data->attach_tree,
-				MUIM_NListtree_GetEntry, (ULONG)treenode, MUIV_NListtree_GetEntry_Position_Head, 0);
+				MUIM_NListtree_GetEntry, (IPTR)treenode, MUIV_NListtree_GetEntry_Position_Head, 0);
 
 
 		while (tn)
@@ -692,7 +692,7 @@ static void compose_window_attach_mail(struct Compose_Data *data, struct MUI_NLi
 				compose_window_attach_mail(data,tn,newcmail);
 				composed_mail_add(cmail,newcmail);
 			}
-			tn = (struct MUI_NListtree_TreeNode*)DoMethod(data->attach_tree, MUIM_NListtree_GetEntry, (ULONG)tn, MUIV_NListtree_GetEntry_Position_Next,0);
+			tn = (struct MUI_NListtree_TreeNode*)DoMethod(data->attach_tree, MUIM_NListtree_GetEntry, (IPTR)tn, MUIV_NListtree_GetEntry_Position_Next,0);
 		}
 	} else
 	{
@@ -761,8 +761,8 @@ static void compose_mail(struct Compose_Data *data, int hold)
 		new_mail.mail_filename = data->filename;
 		new_mail.mail_folder = data->folder;
 		new_mail.reply_message_id = data->reply_id;
-		DoMethod(data->toolbar, MUIM_SMToolbar_GetAttr, SM_COMPOSEWND_BUTTON_ENCRYPT, MUIA_SMToolbar_Attr_Selected, (ULONG)&new_mail.encrypt);
-		DoMethod(data->toolbar, MUIM_SMToolbar_GetAttr, SM_COMPOSEWND_BUTTON_SIGN, MUIA_SMToolbar_Attr_Selected, (ULONG)&new_mail.sign);
+		DoMethod(data->toolbar, MUIM_SMToolbar_GetAttr, SM_COMPOSEWND_BUTTON_ENCRYPT, MUIA_SMToolbar_Attr_Selected, (IPTR)&new_mail.encrypt);
+		DoMethod(data->toolbar, MUIM_SMToolbar_GetAttr, SM_COMPOSEWND_BUTTON_SIGN, MUIA_SMToolbar_Attr_Selected, (IPTR)&new_mail.sign);
 		new_mail.importance = xget(data->importance_cycle, MUIA_Cycle_Active);
 
 		/* Move this out */
@@ -793,7 +793,7 @@ static void compose_mail(struct Compose_Data *data, int hold)
 				}
 			}
 			/* Close (and dispose) the compose window (data) */
-			DoMethod(App, MUIM_Application_PushMethod, (ULONG)App, 4, MUIM_CallHook, (ULONG)&hook_standard, (ULONG)compose_window_dispose, (ULONG)data);
+			DoMethod(App, MUIM_Application_PushMethod, (IPTR)App, 4, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)compose_window_dispose, (IPTR)data);
 		} else
 		{
 			if (!new_mail.subject || !new_mail.subject[0])
@@ -922,12 +922,12 @@ static void compose_add_mail(struct Compose_Data *data, struct mail_complete *ma
 
 	if (!num_multiparts)
 	{
-		DoMethod(data->quick_attach_tree,MUIM_NListtree_Insert, (ULONG)"", (ULONG)&attach,
+		DoMethod(data->quick_attach_tree,MUIM_NListtree_Insert, (IPTR)"", (IPTR)&attach,
 						 MUIV_NListtree_Insert_ListNode_Root,
 						 MUIV_NListtree_Insert_PrevNode_Tail, 0);
 	}
 
-	treenode = (struct MUI_NListtree_TreeNode *)DoMethod(data->attach_tree, MUIM_NListtree_Insert, (ULONG)"", (ULONG)&attach, (ULONG)listnode, MUIV_NListtree_Insert_PrevNode_Tail, num_multiparts?(TNF_LIST|TNF_OPEN):0);
+	treenode = (struct MUI_NListtree_TreeNode *)DoMethod(data->attach_tree, MUIM_NListtree_Insert, (IPTR)"", (IPTR)&attach, (IPTR)listnode, MUIV_NListtree_Insert_PrevNode_Tail, num_multiparts?(TNF_LIST|TNF_OPEN):0);
 
 	free(attach.contents);
 	free(attach.description);

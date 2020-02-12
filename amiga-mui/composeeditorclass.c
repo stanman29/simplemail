@@ -79,7 +79,7 @@ STATIC ULONG ComposeEditor_New(struct IClass *cl,Object *obj,struct opSet *msg)
 
 	set(obj,MUIA_TextEditor_ColorMap, data->cmap);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**
@@ -211,11 +211,11 @@ STATIC ULONG ComposeEditor_DragDrop(struct IClass *cl, Object *obj, struct MUIP_
 	{
 		struct addressbook_entry_new *entry;
 
-		DoMethod(msg->obj, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&entry);
+		DoMethod(msg->obj, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&entry);
 
 		if (entry && entry->email_array && entry->email_array[0])
 		{
-			DoMethod(obj, MUIM_TextEditor_InsertText, (ULONG)entry->email_array[0], MUIV_TextEditor_InsertText_Cursor);
+			DoMethod(obj, MUIM_TextEditor_InsertText, (IPTR)entry->email_array[0], MUIV_TextEditor_InsertText_Cursor);
 		}
 	} else if (OCLASS(msg->obj) == CL_MailTreelist->mcc_Class)
 	{
@@ -225,7 +225,7 @@ STATIC ULONG ComposeEditor_DragDrop(struct IClass *cl, Object *obj, struct MUIP_
 			char *from = mail_get_from_address(mail);
 			if (from)
 			{
-				DoMethod(obj, MUIM_TextEditor_InsertText, (ULONG)from, MUIV_TextEditor_InsertText_Cursor);
+				DoMethod(obj, MUIM_TextEditor_InsertText, (IPTR)from, MUIV_TextEditor_InsertText_Cursor);
 				free(from);
 			}
 		}

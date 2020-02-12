@@ -192,7 +192,7 @@ static const char *mailtree_get_fromto(struct MailTreelist_Data *data, struct ma
 	dest = data->fromto_buf;
 	if (mail->flags & MAIL_FLAGS_GROUP)
 	{
-		sprintf(dest,"\33O[%08lx]",(ULONG)data->status_group);
+		sprintf(dest,"\33O[%08lx]",(IPTR)data->status_group);
 		dest += strlen(dest);
 	}
 
@@ -257,13 +257,13 @@ STATIC ASM SAVEDS VOID mails_display(REG(a0,struct Hook *h),REG(a2,Object *obj),
 
 				if (mail->flags & MAIL_FLAGS_AUTOSPAM)
 				{
-					sprintf(status_buf,"\33O[%08lx]",(ULONG)data->status_new_spam);
+					sprintf(status_buf,"\33O[%08lx]",(IPTR)data->status_new_spam);
 				} else
 				if (mail->flags & MAIL_FLAGS_NEW)
 				{
-					if (mail_info_is_spam(mail)) sprintf(status_buf,"\33O[%08lx]",(ULONG)data->status_new_spam);
-					else if (mail->flags & MAIL_FLAGS_PARTIAL)	sprintf(status_buf,"\33O[%08lx]",(ULONG)data->status_new_partial);
-					else sprintf(status_buf,"\33O[%08lx]",(ULONG)data->status_new);
+					if (mail_info_is_spam(mail)) sprintf(status_buf,"\33O[%08lx]",(IPTR)data->status_new_spam);
+					else if (mail->flags & MAIL_FLAGS_PARTIAL)	sprintf(status_buf,"\33O[%08lx]",(IPTR)data->status_new_partial);
+					else sprintf(status_buf,"\33O[%08lx]",(IPTR)data->status_new);
 
 					*preparse++ = (char*)"\33b";
 					*preparse++ = (char*)"\33b";
@@ -276,8 +276,8 @@ STATIC ASM SAVEDS VOID mails_display(REG(a0,struct Hook *h),REG(a2,Object *obj),
 					*preparse = (char*)"\33b";
 				} else
 				{
-					if (mail_is_spam(mail)) sprintf(status_buf,"\33O[%08lx]",(ULONG)data->status_unread_spam);
-					else if ((mail->flags & MAIL_FLAGS_NORCPT) && data->folder_type == FOLDER_TYPE_SEND) sprintf(status_buf,"\33O[%08lx]",(ULONG)data->status_norcpt);
+					if (mail_is_spam(mail)) sprintf(status_buf,"\33O[%08lx]",(IPTR)data->status_unread_spam);
+					else if ((mail->flags & MAIL_FLAGS_NORCPT) && data->folder_type == FOLDER_TYPE_SEND) sprintf(status_buf,"\33O[%08lx]",(IPTR)data->status_norcpt);
 					else
 					{
 						if (mail->flags & MAIL_FLAGS_PARTIAL)
@@ -303,13 +303,13 @@ STATIC ASM SAVEDS VOID mails_display(REG(a0,struct Hook *h),REG(a2,Object *obj),
 								default: status = NULL;
 							}
 						}
-						sprintf(status_buf,"\33O[%08lx]",(ULONG)status);
+						sprintf(status_buf,"\33O[%08lx]",(IPTR)status);
 					}
 				}
 
-				if (mail->status & MAIL_STATUS_FLAG_MARKED) sprintf(status_buf+strlen(status_buf),"\33O[%08lx]",(ULONG)data->status_mark);
-				if (mail->flags & MAIL_FLAGS_IMPORTANT) sprintf(status_buf+strlen(status_buf),"\33O[%08lx]",(ULONG)data->status_important);
-				if (mail->flags & MAIL_FLAGS_CRYPT) sprintf(status_buf+strlen(status_buf),"\33O[%08lx]",(ULONG)data->status_crypt);
+				if (mail->status & MAIL_STATUS_FLAG_MARKED) sprintf(status_buf+strlen(status_buf),"\33O[%08lx]",(IPTR)data->status_mark);
+				if (mail->flags & MAIL_FLAGS_IMPORTANT) sprintf(status_buf+strlen(status_buf),"\33O[%08lx]",(IPTR)data->status_important);
+				if (mail->flags & MAIL_FLAGS_CRYPT) sprintf(status_buf+strlen(status_buf),"\33O[%08lx]",(IPTR)data->status_crypt);
 				else
 				{
 					if (mail->flags & MAIL_FLAGS_SIGNED) sprintf(status_buf+strlen(status_buf),"\33O[%08lx]",(IPTR)data->status_signed);

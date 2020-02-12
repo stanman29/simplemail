@@ -90,7 +90,7 @@ struct FolderTreelist_Data
 STATIC ASM SAVEDS VOID folder_close(REG(a0,struct Hook*h), REG(a2, Object *obj), REG(a1,struct MUIP_NListtree_CloseMessage *msg))
 {
 	struct folder *folder = (struct folder*)msg->TreeNode->tn_User;
-	if (folder && ((ULONG)folder != MUIV_FolderTreelist_UserData_Root))
+	if (folder && ((IPTR)folder != MUIV_FolderTreelist_UserData_Root))
 		folder->closed = 1;
 }
 
@@ -99,7 +99,7 @@ STATIC ASM SAVEDS VOID folder_display(REG(a0,struct Hook*h), REG(a2, Object *obj
 	struct FolderTreelist_Data *data = (struct FolderTreelist_Data*)INST_DATA(CL_FolderTreelist->mcc_Class,obj);
 	if (msg->TreeNode)
 	{
-		if ((ULONG)msg->TreeNode->tn_User == MUIV_FolderTreelist_UserData_Root)
+		if ((IPTR)msg->TreeNode->tn_User == MUIV_FolderTreelist_UserData_Root)
 		{
 			*msg->Array++ = NULL;
 			*msg->Array++ = (char*)"";
@@ -141,7 +141,7 @@ STATIC ASM SAVEDS VOID folder_display(REG(a0,struct Hook*h), REG(a2, Object *obj
 				unread_buf[0] = 0;
 			}
 
-			sprintf(data->name_buf,"\33O[%08lx]%s%s",(ULONG)image,newm?"\33b":"",busy?MUIX_I:"");
+			sprintf(data->name_buf,"\33O[%08lx]%s%s",(IPTR)image,newm?"\33b":"",busy?MUIX_I:"");
 			if (folder->name)
 			{
 				int cur_len = strlen(data->name_buf);
@@ -174,7 +174,7 @@ STATIC ASM SAVEDS VOID folder_display(REG(a0,struct Hook*h), REG(a2, Object *obj
 STATIC ASM SAVEDS VOID folder_open(REG(a0,struct Hook *h), REG(a2, Object *o), REG(a1,struct MUIP_NListtree_OpenMessage *msg))
 {
 	struct folder *folder = (struct folder*)msg->TreeNode->tn_User;
-	if (folder && ((ULONG)folder != MUIV_FolderTreelist_UserData_Root))
+	if (folder && ((IPTR)folder != MUIV_FolderTreelist_UserData_Root))
 		folder->closed = 0;
 }
 
@@ -274,7 +274,7 @@ STATIC ULONG FolderTreelist_New(struct IClass *cl,Object *obj,struct opSet *msg)
 
 	FolderTreelist_UpdateFormat(cl,obj);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 STATIC ULONG FolderTreelist_Dispose(struct IClass *cl, Object *obj, Msg msg)
@@ -303,13 +303,13 @@ STATIC ULONG FolderTreelist_Setup(struct IClass *cl, Object *obj, struct MUIP_Se
 	struct FolderTreelist_Data *data = (struct FolderTreelist_Data*)INST_DATA(cl,obj);
 	if (!DoSuperMethodA(cl,obj,(Msg)msg)) return 0;
 
-	data->image_incoming = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (ULONG)data->image_incoming_obj, 0);
-	data->image_outgoing = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (ULONG)data->image_outgoing_obj, 0);
-	data->image_sent = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (ULONG)data->image_sent_obj, 0);
-	data->image_deleted = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (ULONG)data->image_deleted_obj, 0);
-	data->image_other = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (ULONG)data->image_other_obj, 0);
-	data->image_spam = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (ULONG)data->image_spam_obj, 0);
-	data->image_group = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (ULONG)data->image_group_obj, 0);
+	data->image_incoming = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (IPTR)data->image_incoming_obj, 0);
+	data->image_outgoing = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (IPTR)data->image_outgoing_obj, 0);
+	data->image_sent = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (IPTR)data->image_sent_obj, 0);
+	data->image_deleted = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (IPTR)data->image_deleted_obj, 0);
+	data->image_other = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (IPTR)data->image_other_obj, 0);
+	data->image_spam = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (IPTR)data->image_spam_obj, 0);
+	data->image_group = (APTR)DoMethod(obj, MUIM_NList_CreateImage, (IPTR)data->image_group_obj, 0);
 
 	return 1;
 }
@@ -317,13 +317,13 @@ STATIC ULONG FolderTreelist_Setup(struct IClass *cl, Object *obj, struct MUIP_Se
 STATIC ULONG FolderTreelist_Cleanup(struct IClass *cl, Object *obj, Msg msg)
 {
 	struct FolderTreelist_Data *data = (struct FolderTreelist_Data*)INST_DATA(cl,obj);
-	if (data->image_group) DoMethod(obj, MUIM_NList_DeleteImage, (ULONG)data->image_group);
-	if (data->image_spam) DoMethod(obj, MUIM_NList_DeleteImage, (ULONG)data->image_spam);
-	if (data->image_other) DoMethod(obj, MUIM_NList_DeleteImage, (ULONG)data->image_other);
-	if (data->image_deleted) DoMethod(obj, MUIM_NList_DeleteImage, (ULONG)data->image_deleted);
-	if (data->image_sent) DoMethod(obj, MUIM_NList_DeleteImage, (ULONG)data->image_sent);
-	if (data->image_outgoing) DoMethod(obj, MUIM_NList_DeleteImage, (ULONG)data->image_outgoing);
-	if (data->image_incoming) DoMethod(obj, MUIM_NList_DeleteImage, (ULONG)data->image_incoming);
+	if (data->image_group) DoMethod(obj, MUIM_NList_DeleteImage, (IPTR)data->image_group);
+	if (data->image_spam) DoMethod(obj, MUIM_NList_DeleteImage, (IPTR)data->image_spam);
+	if (data->image_other) DoMethod(obj, MUIM_NList_DeleteImage, (IPTR)data->image_other);
+	if (data->image_deleted) DoMethod(obj, MUIM_NList_DeleteImage, (IPTR)data->image_deleted);
+	if (data->image_sent) DoMethod(obj, MUIM_NList_DeleteImage, (IPTR)data->image_sent);
+	if (data->image_outgoing) DoMethod(obj, MUIM_NList_DeleteImage, (IPTR)data->image_outgoing);
+	if (data->image_incoming) DoMethod(obj, MUIM_NList_DeleteImage, (IPTR)data->image_incoming);
 	return DoSuperMethodA(cl,obj,msg);
 }
 
@@ -337,7 +337,7 @@ STATIC ULONG FolderTreelist_Set(struct IClass *cl, Object *obj, struct opSet *ms
 
 	while ((tag = NextTagItem (&tstate)))
 	{
-		ULONG tidata = tag->ti_Data;
+		IPTR tidata = tag->ti_Data;
 
 		switch (tag->ti_Tag)
 		{
@@ -365,11 +365,11 @@ STATIC ULONG FolderTreelist_Get(struct IClass *cl, Object *obj, struct opGet *ms
 	switch (msg->opg_AttrID)
 	{
 		case	MUIA_FolderTreelist_MailDrop:
-					*msg->opg_Storage = (LONG)data->folder_maildrop;
+					*msg->opg_Storage = (IPTR)data->folder_maildrop;
 					return 1;
 
 		case	MUIA_FolderTreelist_OrderChanged:
-					*msg->opg_Storage = (LONG)1;
+					*msg->opg_Storage = (IPTR)1;
 					return 1;
 
 		case	MUIA_FolderTreelist_Active:
@@ -538,11 +538,11 @@ STATIC ULONG FolderTreelist_ContextMenuChoice(struct IClass *cl, Object *obj,str
 STATIC ULONG FolderTreelist_NList_ContextMenuBuild(struct IClass *cl, Object * obj, struct MUIP_NList_ContextMenuBuild *msg)
 {
 	struct FolderTreelist_Data *data = (struct FolderTreelist_Data*)INST_DATA(cl,obj);
-	if (msg->ontop) return (ULONG)data->title_menu;
+	if (msg->ontop) return (IPTR)data->title_menu;
 
 /*	set(obj,MUIA_NList_Active,msg->pos);*/
 
-	return (ULONG) data->context_menu;
+	return (IPTR) data->context_menu;
 }
 
 /* TODO: We need to make sure that we are always notifed if something changes in the folder model */
@@ -557,7 +557,7 @@ STATIC ULONG FolderTreelist_Refresh(struct IClass *cl, Object *obj, struct MUIP_
 
 	if (data->show_root)
 	{
-		root = (APTR)DoMethod(obj,MUIM_NListtree_Insert, (ULONG)_("All folders") /*name*/, MUIV_FolderTreelist_UserData_Root, /*udata */
+		root = (APTR)DoMethod(obj,MUIM_NListtree_Insert, (IPTR)_("All folders") /*name*/, MUIV_FolderTreelist_UserData_Root, /*udata */
 					MUIV_NListtree_Insert_ListNode_Root, MUIV_NListtree_Insert_PrevNode_Tail, TNF_OPEN|TNF_LIST/*flags*/);
 	} else root = (APTR)MUIV_NListtree_Insert_ListNode_Root;
 
@@ -576,12 +576,12 @@ STATIC ULONG FolderTreelist_Refresh(struct IClass *cl, Object *obj, struct MUIP_
 			if (f->closed) flags = TNF_LIST;
 			else flags = TNF_OPEN|TNF_LIST;
 
-			DoMethod(obj, MUIM_NListtree_Insert, (ULONG)"" /*name*/, (ULONG)f, /*udata */
-						(ULONG)treenode, MUIV_NListtree_Insert_PrevNode_Tail, flags);
+			DoMethod(obj, MUIM_NListtree_Insert, (IPTR)"" /*name*/, (IPTR)f, /*udata */
+						(IPTR)treenode, MUIV_NListtree_Insert_PrevNode_Tail, flags);
 		} else
 		{
-			DoMethod(obj, MUIM_NListtree_Insert, (ULONG)"" /*name*/, (ULONG)f, /*udata */
-						(ULONG)treenode, MUIV_NListtree_Insert_PrevNode_Tail, 0/*flags*/);
+			DoMethod(obj, MUIM_NListtree_Insert, (IPTR)"" /*name*/, (IPTR)f, /*udata */
+						(IPTR)treenode, MUIV_NListtree_Insert_PrevNode_Tail, 0/*flags*/);
 		}
 	}
 	set(obj,MUIA_NListtree_Quiet,FALSE);

@@ -118,7 +118,7 @@ STATIC ULONG PGPList_New(struct IClass *cl,Object *obj,struct opSet *msg)
 						MUIA_NList_Format, ",",
 						TAG_DONE);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /**

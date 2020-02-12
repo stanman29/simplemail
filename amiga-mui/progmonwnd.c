@@ -193,7 +193,7 @@ void progmonwnd_update(int force)
 
 		next_node = (struct progmon_gui_node*)node_next(&node->node);
 		node_remove(&node->node);
-		DoMethod(progmon_group, OM_REMMEMBER, (ULONG)node->progmon_group);
+		DoMethod(progmon_group, OM_REMMEMBER, (IPTR)node->progmon_group);
 		MUI_DisposeObject(node->progmon_group);
 		free(node);
 		node = next_node;

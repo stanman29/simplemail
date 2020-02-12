@@ -222,7 +222,7 @@ static void init_search(void)
 	if (search_wnd)
 	{
 		set(search_stop_button, MUIA_Disabled, TRUE);
-		DoMethod(App, OM_ADDMEMBER, (ULONG)search_wnd);
+		DoMethod(App, OM_ADDMEMBER, (IPTR)search_wnd);
 		DoMethod(search_wnd, MUIM_Notify, MUIA_Window_CloseRequest, TRUE, (IPTR)search_wnd, 3, MUIM_Set, MUIA_Window_Open, FALSE);
 		DoMethod(search_folder_tree, MUIM_Notify, MUIA_NListtree_DoubleClick, MUIV_EveryTime, (IPTR)search_folder_popobject, 2, MUIM_Popstring_Close, TRUE);
 		DoMethod(search_start_button, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)search_wnd, 3, MUIM_CallHook, (IPTR)&hook_standard, (IPTR)searchwnd_start);

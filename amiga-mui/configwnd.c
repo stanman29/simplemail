@@ -284,7 +284,7 @@ void config_accounts_update_fingerprint(const char *server, const char *fingerpr
 	for (i=0;i<xget(account_account_list,MUIA_NList_Entries);i++)
 	{
 		struct account *ac;
-		DoMethod(account_account_list,MUIM_NList_GetEntry, i, (ULONG)&ac);
+		DoMethod(account_account_list,MUIM_NList_GetEntry, i, (IPTR)&ac);
 
 		if (account_trust_server_for_single_account(ac, server, fingerprint))
 		{
@@ -609,8 +609,8 @@ static int config_use(void)
 			int invalid = -1;
 
 			if (i==j) continue;
-			DoMethod(account_account_list, MUIM_NList_GetEntry, i, (ULONG)&ac1);
-			DoMethod(account_account_list, MUIM_NList_GetEntry, j, (ULONG)&ac2);
+			DoMethod(account_account_list, MUIM_NList_GetEntry, i, (IPTR)&ac1);
+			DoMethod(account_account_list, MUIM_NList_GetEntry, j, (IPTR)&ac2);
 
 			if (ac1->email && ac2->email)
 			{
@@ -652,7 +652,7 @@ static int config_use(void)
 	for (i=0;i<xget(signature_signature_list,MUIA_NList_Entries);i++)
 	{
 		struct signature *sign1, *sign2;
-		DoMethod(signature_signature_list,MUIM_NList_GetEntry, i, (ULONG)&sign1);
+		DoMethod(signature_signature_list,MUIM_NList_GetEntry, i, (IPTR)&sign1);
 
 		if ((mystrcmp(sign1->name, MUIV_SignatureCycle_NoSignature) == 0) ||
 		    (mystrcmp(sign1->name, MUIV_SignatureCycle_Default) == 0))
@@ -667,7 +667,7 @@ static int config_use(void)
 		for (j=0;j<xget(signature_signature_list,MUIA_NList_Entries);j++)
 		{
 			if (i==j) continue;
-			DoMethod(signature_signature_list,MUIM_NList_GetEntry, j, (ULONG)&sign2);
+			DoMethod(signature_signature_list,MUIM_NList_GetEntry, j, (IPTR)&sign2);
 
 			if (mystrcmp(sign1->name, sign2->name) == 0)
 			{
@@ -782,7 +782,7 @@ static int config_use(void)
 	for (i=0;i<xget(account_account_list,MUIA_NList_Entries);i++)
 	{
 		struct account *ac;
-		DoMethod(account_account_list,MUIM_NList_GetEntry, i, (ULONG)&ac);
+		DoMethod(account_account_list,MUIM_NList_GetEntry, i, (IPTR)&ac);
 		insert_config_account(ac);
 	}
 

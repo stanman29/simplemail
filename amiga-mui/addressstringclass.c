@@ -70,7 +70,7 @@ STATIC VOID MatchWindow_NewActive(void **msg)
 	struct address_match_entry *entry;
 	int active;
 
-	DoMethod(data->list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (ULONG)&entry);
+	DoMethod(data->list, MUIM_NList_GetEntry, MUIV_NList_GetEntry_Active, (IPTR)&entry);
 	active = xget(data->list,MUIA_NList_Active);
 
 	if (entry)
@@ -86,12 +86,12 @@ STATIC VOID MatchWindow_NewActive(void **msg)
 
 				/* Get the completed string */
 				if (!utf8stricmp_len(addr_start,entry->o.group->name,addr_start_len))
-					DoMethod(data->str, MUIM_AddressString_Complete, (ULONG)entry->o.group->name + addr_start_len);
+					DoMethod(data->str, MUIM_AddressString_Complete, (IPTR)entry->o.group->name + addr_start_len);
 			} else if (entry->type == AMET_ENTRY)
 			{
 				/* Address entries have an own function to get the completed string */
 				if ((complete = addressbook_get_entry_completing_part(entry->o.entry, addr_start, NULL)))
-					DoMethod(data->str, MUIM_AddressString_Complete, (ULONG)complete);
+					DoMethod(data->str, MUIM_AddressString_Complete, (IPTR)complete);
 			} else if (entry->type == AMET_COMPLETION)
 			{
 				/* Updating the contents doesn't make sense here, because the
@@ -117,7 +117,7 @@ STATIC ULONG MatchWindow_New(struct IClass *cl,Object *obj,struct opSet *msg)
 	Object *list,*str;
 	struct MatchWindow_Data *data;
 
-	if (!(str = (Object*)GetTagData(MUIA_MatchWindow_String, (ULONG)NULL, msg->ops_AttrList)))
+	if (!(str = (Object*)GetTagData(MUIA_MatchWindow_String, (IPTR)NULL, msg->ops_AttrList)))
 		return 0;
 
 	if (!(obj=(Object *)DoSuperNew(cl,obj,

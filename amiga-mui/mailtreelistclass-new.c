@@ -436,7 +436,7 @@ static void IssueTreelistActiveNotify(struct IClass *cl, Object *obj, struct Mai
 	tags[0].ti_Tag = MUIA_MailTreelist_Active;
 
 	if (data->entries_active != -1)
-		tags[0].ti_Data = (ULONG)(data->entries[data->entries_active]->mail_info);
+		tags[0].ti_Data = (IPTR)(data->entries[data->entries_active]->mail_info);
 	else
 		tags[0].ti_Data = 0;
 
@@ -1728,12 +1728,12 @@ STATIC ULONG MailTreelist_New(struct IClass *cl,Object *obj,struct opSet *msg)
 
 	if ((data->vert_scroller = (Object*)GetTagData(MUIA_MailTreelist_VertScrollbar,0,msg->ops_AttrList)))
 	{
-		DoMethod(data->vert_scroller, MUIM_Notify,  MUIA_Prop_First, MUIV_EveryTime, (ULONG)obj, 3, MUIM_Set, MUIA_MailTreelist_First, MUIV_TriggerValue);
+		DoMethod(data->vert_scroller, MUIM_Notify,  MUIA_Prop_First, MUIV_EveryTime, (IPTR)obj, 3, MUIM_Set, MUIA_MailTreelist_First, MUIV_TriggerValue);
 	}
 
 	if ((data->horiz_scroller = (Object*)GetTagData(MUIA_MailTreelist_HorizScrollbar,0,msg->ops_AttrList)))
 	{
-		DoMethod(data->horiz_scroller, MUIM_Notify,  MUIA_Prop_First, MUIV_EveryTime, (ULONG)obj, 3, MUIM_Set, MUIA_MailTreelist_HorizontalFirst, MUIV_TriggerValue);
+		DoMethod(data->horiz_scroller, MUIM_Notify,  MUIA_Prop_First, MUIV_EveryTime, (IPTR)obj, 3, MUIM_Set, MUIA_MailTreelist_HorizontalFirst, MUIV_TriggerValue);
 	}
 
 	data->horiz_scroller_group = (Object*)GetTagData(MUIA_MailTreelist_GroupOfHorizScrollbar,0,msg->ops_AttrList);
@@ -1764,7 +1764,7 @@ STATIC ULONG MailTreelist_New(struct IClass *cl,Object *obj,struct opSet *msg)
 
 	PrepareDisplayedColumns(data);
 
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /*************************************************************************
@@ -1795,7 +1795,7 @@ STATIC ULONG MailTreelist_Set(struct IClass *cl, Object *obj, struct opSet *msg)
 
 	while ((tag = NextTagItem (&tstate)))
 	{
-		ULONG tidata = tag->ti_Data;
+		IPTR tidata = tag->ti_Data;
 
 		switch (tag->ti_Tag)
 		{
@@ -1945,7 +1945,7 @@ STATIC ULONG MailTreelist_Get(struct IClass *cl, Object *obj, struct opGet *msg)
 	if (msg->opg_AttrID == MUIA_MailTreelist_Active)
 	{
 		if (data->entries_active >= 0 && data->entries_active < data->entries_num)
-			*msg->opg_Storage = (ULONG)data->entries[data->entries_active]->mail_info;
+			*msg->opg_Storage = (IPTR)data->entries[data->entries_active]->mail_info;
 		else
 			*msg->opg_Storage = 0;
 		return 1;

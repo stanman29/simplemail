@@ -325,7 +325,7 @@ STATIC ULONG MessageView_New(struct IClass *cl,Object *obj,struct opSet *msg)
 	DoMethod(data->simplehtml, MUIM_Notify, MUIA_SimpleHTML_TotalHoriz, MUIV_EveryTime, (ULONG)App, 4, MUIM_Application_PushMethod, (ULONG)obj, 1, MUIM_MessageView_Changed);
 	DoMethod(data->simplehtml, MUIM_Notify, MUIA_SimpleHTML_TotalVert, MUIV_EveryTime, (ULONG)App, 4, MUIM_Application_PushMethod, (ULONG)obj, 1, MUIM_MessageView_Changed);
 */
-	return (ULONG)obj;
+	return (IPTR)obj;
 }
 
 /******************************************************************

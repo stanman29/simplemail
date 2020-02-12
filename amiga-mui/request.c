@@ -235,7 +235,7 @@ int sm_request_login(const char *text, char *login, char *password, int len)
 			mystrlcpy(password, (char*)xget(pass_string,MUIA_String_Contents), len);
 			ret = 1;
 		}
-		DoMethod(App, OM_REMMEMBER, (ULONG)wnd);
+		DoMethod(App, OM_REMMEMBER, (IPTR)wnd);
 		MUI_DisposeObject(wnd);
 	}
 	return ret;

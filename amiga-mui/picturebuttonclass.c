@@ -173,7 +173,7 @@ STATIC ULONG PictureButton_New(struct IClass *cl,Object *obj,struct opSet *msg)
 	/* tell MUI not to care about filling our background during MUIM_Draw */
 /*	set(obj,MUIA_FillArea,FALSE);*/
 
-	return((ULONG)obj);
+	return((IPTR)obj);
 }
 
 /**
