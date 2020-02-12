@@ -96,7 +96,7 @@ char **array_of_addresses_from_texteditor(Object *editor, int page, int *error_p
 /**
  * The Boopsi dispatcher for the size custom class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, Sizes_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, Sizes_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -113,6 +113,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, Sizes_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 struct MUI_CustomClass *CL_Sizes;
 

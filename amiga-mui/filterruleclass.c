@@ -543,7 +543,7 @@ STATIC ULONG FilterRule_DragDrop(struct IClass *cl,Object *obj,struct MUIP_DragD
 /**
  * The Boopsi dispatcher for the filter rule list class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, FilterRule_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, FilterRule_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -556,6 +556,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, FilterRule_Dispatcher, cl, obj, msg)
 		default:         return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 /*****************************************************************************/
 

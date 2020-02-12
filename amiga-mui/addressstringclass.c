@@ -264,7 +264,7 @@ STATIC ULONG MatchWindow_Down(struct IClass *cl, Object *obj, Msg msg)
 /**
  * The Boopsi Dispatcher for the match window class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, MatchWindow_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, MatchWindow_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -277,7 +277,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, MatchWindow_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
-
+BOOPSI_DISPATCHER_END
 
 /*****************************************************************************/
 
@@ -717,7 +717,7 @@ STATIC ULONG AddressString_UpdateList(struct IClass *cl, Object *obj)
 /**
  * The Boopsi Dispatcher for the address string class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, AddressString_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, AddressString_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -734,6 +734,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, AddressString_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 /*****************************************************************************/
 

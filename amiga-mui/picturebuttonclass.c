@@ -420,7 +420,7 @@ STATIC ULONG PictureButton_Draw(struct IClass *cl,Object *obj,struct MUIP_Draw *
 /**
  * The Boopsi dispatcher for the picture button class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, PictureButton_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, PictureButton_Dispatcher, cl, obj, msg)
 {
 	switch (msg->MethodID)
 	{
@@ -435,6 +435,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, PictureButton_Dispatcher, cl, obj, msg)
 
 	return DoSuperMethodA(cl,obj,msg);
 }
+BOOPSI_DISPATCHER_END
 
 /*****************************************************************************/
 

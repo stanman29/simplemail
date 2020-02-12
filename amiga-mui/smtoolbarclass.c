@@ -440,7 +440,7 @@ STATIC ULONG SMToolbar_DoMethod(struct IClass *cl, Object *obj, struct MUIP_SMTo
 	return 0;
 }
 
-STATIC MY_BOOPSI_DISPATCHER(ULONG, SMToolbar_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, SMToolbar_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -453,6 +453,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, SMToolbar_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 struct MUI_CustomClass *CL_SMToolbar;
 

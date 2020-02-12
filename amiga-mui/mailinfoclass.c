@@ -198,7 +198,7 @@ STATIC ULONG TinyButton_Draw(struct IClass *cl, Object *obj, struct MUIP_Draw *m
 /**
  * The Boopsi dispatcher for the tiny button custom class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, TinyButton_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, TinyButton_Dispatcher, cl, obj, msg)
 {
 	switch (msg->MethodID)
 	{
@@ -208,6 +208,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, TinyButton_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 /*****************************************************************************/
 
@@ -1221,7 +1222,7 @@ STATIC ULONG MailInfo_CompactChanged(struct IClass *cl, Object *obj, Msg msg)
 /**
  * The Boopsi dispatcher for the mail info area class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, MailInfoArea_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, MailInfoArea_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -1238,6 +1239,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, MailInfoArea_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 /*************************************************************************/
 
@@ -1281,7 +1283,7 @@ STATIC ULONG MailInfo_New(struct IClass *cl,Object *obj,struct opSet *msg)
 /**
  * The Boopsi dispatcher for the mail info group class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, MailInfo_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, MailInfo_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -1289,7 +1291,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, MailInfo_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
-
+BOOPSI_DISPATCHER_END
 
 /*************************************************************************/
 

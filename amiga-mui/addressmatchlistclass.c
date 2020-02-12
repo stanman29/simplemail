@@ -456,7 +456,7 @@ STATIC ULONG AddressMatchList_Refresh(struct IClass *cl, Object *obj, struct MUI
 /**
  * The Boopsi Dispatcher for the address match list class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG,AddressMatchList_Dispatcher,cl,obj,msg)
+STATIC BOOPSI_DISPATCHER(IPTR,AddressMatchList_Dispatcher,cl,obj,msg)
 {
 	switch(msg->MethodID)
 	{
@@ -468,6 +468,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG,AddressMatchList_Dispatcher,cl,obj,msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 /*****************************************************************************/
 

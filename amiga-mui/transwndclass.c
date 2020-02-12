@@ -525,7 +525,7 @@ STATIC ULONG transwnd_Wait (struct IClass *cl, Object *obj, Msg msg)
 /**
  * The Boopsi dispatcher for the transwnd class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG, transwnd_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR, transwnd_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -543,6 +543,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, transwnd_Dispatcher, cl, obj, msg)
 
 	return(DoSuperMethodA(cl, obj, msg));
 }
+BOOPSI_DISPATCHER_END
 
 /*****************************************************************************/
 

@@ -428,7 +428,7 @@ STATIC ULONG MessageView_DisplayMail(struct IClass *cl, Object *obj, struct MUIP
 
 /**************************************************************************/
 
-STATIC MY_BOOPSI_DISPATCHER(ULONG, MessageView_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(ULONG, MessageView_Dispatcher, cl, obj, msg)
 {
 	switch(msg->MethodID)
 	{
@@ -443,6 +443,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG, MessageView_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 /**************************************************************************/
 

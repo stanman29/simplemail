@@ -243,7 +243,7 @@ STATIC ULONG AttachmentList_FindUniqueID(struct IClass *cl, Object *obj, struct 
 /**
  * The Boopsi Dispatcher for the attachment list class.
  */
-STATIC MY_BOOPSI_DISPATCHER(ULONG,AttachmentList_Dispatcher, cl, obj, msg)
+STATIC BOOPSI_DISPATCHER(IPTR,AttachmentList_Dispatcher, cl, obj, msg)
 {
 	switch (msg->MethodID)
 	{
@@ -254,6 +254,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG,AttachmentList_Dispatcher, cl, obj, msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 /*****************************************************************************/
 

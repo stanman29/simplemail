@@ -477,7 +477,7 @@ STATIC ULONG DataTypes_HorizUpdate(struct IClass *cl, Object *obj)
 	return 0;
 }
 
-STATIC MY_BOOPSI_DISPATCHER(ULONG,DataTypes_Dispatcher,cl,obj,msg)
+STATIC BOOPSI_DISPATCHER(IPTR,DataTypes_Dispatcher,cl,obj,msg)
 {
 	switch(msg->MethodID)
 	{
@@ -500,6 +500,7 @@ STATIC MY_BOOPSI_DISPATCHER(ULONG,DataTypes_Dispatcher,cl,obj,msg)
 		default: return DoSuperMethodA(cl,obj,msg);
 	}
 }
+BOOPSI_DISPATCHER_END
 
 struct MUI_CustomClass *CL_DataTypes;
 
