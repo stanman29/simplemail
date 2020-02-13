@@ -100,6 +100,9 @@ CFLAGS = \
 	-D__USE_INLINE__\
 	-D__USE_NETINET_IN_H\
 	-D__USE_OLD_TIMEVAL__\
+	-DIPTR=ULONG\
+	-DED_NAME=1\
+	-DCurrentDir=SetCurrentDir\
 	-Wall\
 	-Wno-deprecated-declarations\
 	-fno-strict-aliasing\
