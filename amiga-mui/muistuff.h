@@ -229,14 +229,13 @@ struct  MUIP_DoDrag { ULONG MethodID; LONG touchx; LONG touchy; ULONG flags; }; 
 #define MAKECOLOR32(x) (((x)<<24)|((x)<<16)|((x)<<8)|(x))
 
 /*
-    AROS definition of BOOPSI_DISPATCHER collides with other systems
-    because the opening bracket { is part of the definition.
-    Therefore I've defined MY_BOOPSI_DISPATCHER as the platform independent macro.
+    Definitions of BOOPSI_DISPATCHER macros for systems other than AROS.
+    BOOPSI_DISPATCHER_END closing bracket should not exist there
+    and is therefore defined to nothing.
 */
-#ifdef __AROS__
-//#define MY_BOOPSI_DISPATCHER(rettype,name,cl,obj,msg) rettype name(struct IClass *cl, Object *obj, Msg msg)
-#else
+#ifndef __AROS__
 #define BOOPSI_DISPATCHER(rettype,name,cl,obj,msg)  ASM SAVEDS rettype name(REG(a0,struct IClass *cl),REG(a2,Object *obj), REG(a1, Msg msg))
+#define BOOPSI_DISPATCHER_END
 #endif
 
 #ifdef __cplusplus
