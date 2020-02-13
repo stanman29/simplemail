@@ -133,14 +133,14 @@ static int start(struct WBStartup *wbs)
 				if (!dirlock) dirlock = IDOS->Lock("PROGDIR:",ACCESS_READ);
 				if (dirlock)
 				{
-					BPTR odir = IDOS->CurrentDir(dirlock);
+					BPTR odir = IDOS->SetCurrentDir(dirlock);
 					if (init_io())
 					{
 						rc = main(0,NULL);
 						deinit_io();
 					}
 					deinit_mem();
-					IDOS->UnLock(IDOS->CurrentDir(odir));
+					IDOS->UnLock(IDOS->SetCurrentDir(odir));
 				}
 			}
 			close_libs();
@@ -1355,7 +1355,7 @@ int chdir(const char *dir)
 	BPTR lock = IDOS->Lock((STRPTR)dir,ACCESS_READ);
 	BPTR odir;
 	if (!lock) return -1;
-	odir = IDOS->CurrentDir(lock);
+	odir = IDOS->SetCurrentDir(lock);
 	IDOS->UnLock(odir);
 	return 0;
 }
