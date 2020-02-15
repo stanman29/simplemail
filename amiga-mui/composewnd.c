@@ -19,7 +19,7 @@
 /**
  * @file composewnd.c
  */
-
+#include <aros/debug.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -463,7 +463,9 @@ static void compose_add_files(struct Compose_Data **pdata)
 
 		if (MUI_AslRequestTags(data->file_req,
 				ASLFR_DoMultiSelect, TRUE,
+#ifndef __AROS__ /*TODO: Is the following correct? Check why this tag crashes aros asl implementation.*/
 				iwnd?ASLFR_Window:TAG_IGNORE, iwnd,
+#endif
 				TAG_DONE))
 		{
 			int i;
