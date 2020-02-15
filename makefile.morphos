@@ -9,7 +9,7 @@ DATE   = -DSIMPLEMAIL_DATE=\"`date +%d.%m.%Y`\" -DSIMPLEMAIL_YEAR=\"`date +%Y`\"
 
 # Uncomment the next line if you are cross compiling
 
-CC      = $(CROSS_COMPILE)gcc-4
+CC      = $(CROSS_COMPILE)gcc
 CXX     = $(CROSS_COMPILE)c++
 AS      = $(CROSS_COMPILE)as
 LD      = $(CROSS_COMPILE)ld
@@ -27,7 +27,7 @@ OPENSSL_PATH = ../openssl/
 INC = -I. -I./indep-include -I./amiga-mui -I$(OPENSSL_PATH)objects/host-libnix/include
 CFLAGS = -noixemul $(DATE) -DSM_COMMITID=$(COMMITID) -DHAVE_STRCASECMP \
 -DHAVE_STRNCASECMP -DHAVE_OPENURL -DAMITCP_SDK -D__MORPHOS_SHAREDLIBS \
--DUSE_OPENSSL -Wall -fno-strict-aliasing $(OPTIMIZE) $(DEBUG) $(INC)
+-DUSE_OPENSSL -D__USE_XOPEN2K8 -Wall -fno-strict-aliasing $(OPTIMIZE) $(DEBUG) $(INC)
 
 # Flags passed to gcc during linking
 LINK = -noixemul
