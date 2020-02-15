@@ -19,7 +19,7 @@
 /**
  * @file composewnd.c
  */
-#include <aros/debug.h>
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
